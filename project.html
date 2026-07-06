@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebuilding Satispay app IA – Davide Zoppi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="project-detail">
+            <div class="detail-left">
+                <a href="index.html" class="action-btn back-btn">
+                    <img src="./images/arrow-back-20.svg" class="btn-icon" alt="" />
+                    <span>Back</span>
+                </a>
+                <div class="detail-nav-group">
+                    <a class="detail-left-title" href="#summary">Rebuilding Satispay app information architecture</a>
+                    <nav class="detail-nav">
+                        <a href="#problem">The problem</a>
+                        <a href="#assumptions">Assumption &amp; Ideas</a>
+                        <a href="#research">Research</a>
+                        <a href="#solutions">Solutions</a>
+                        <a href="#impact">Impact &amp; outcomes</a>
+                        <a href="#reflection">Reflection and key learnings</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="detail-right">
+                <h2 id="summary" class="detail-title">Rebuilding Satispay app information architecture</h2>
+                <div class="project-image-wrapper">
+                    <img class="project-image" src="./images/Image 16_9.png" alt="Rebuilding Satispay app information architecture" />
+                </div>
+                <p class="detail-body">Redesigned the information architecture for Satispay's 3M+ active users, optimizing and enhancing overall platform scalability. There's often a tradeoff: point at elements but stay locked in, or use any tool but describe everything in text. This problem becomes especially obvious when working on animations and interactions, which is what got me thinking about how to give better visual feedback to agents in general. There's often a tradeoff: point at elements but stay locked in, or use any tool but describe everything in text. This problem becomes especially obvious when working on animations and interactions, which is what got me thinking about how to give better visual feedback to agents in general. There's often a tradeoff: point at elements but stay locked in, or use any tool but describe everything in text. This problem becomes especially obvious when working on animations and interactions, which is what got me thinking about how to give better visual feedback to agents in general.</p>
+                <h3 id="problem" class="detail-subtitle">The problem</h3>
+                <p class="detail-body">Satispay's app had a complex and confusing information architecture, leading to user frustration and decreased engagement. The navigation was not intuitive, and users struggled to find the features they needed, resulting in a poor user experience and potential loss of customers.</p>  
+            </div>
+        </div>
+    </div>
+    <script>
+        // Sidebar title reveal
+        const detailTitle = document.querySelector('.detail-title');
+        const sidebarTitle = document.querySelector('.detail-left-title');
+
+        if (detailTitle && sidebarTitle) {
+            const observer = new IntersectionObserver(
+                ([entry]) => sidebarTitle.classList.toggle('visible', !entry.isIntersecting),
+                { threshold: 0, rootMargin: '-20px 0px 0px 0px' }
+            );
+            observer.observe(detailTitle);
+        }
+
+        // Scroll-spy for nav links
+        const navLinks = document.querySelectorAll('.detail-nav a');
+        const sectionIds = Array.from(navLinks).map(l => l.getAttribute('href').slice(1));
+        const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+        function updateActiveNav() {
+            let current = null;
+            sections.forEach(section => {
+                if (section.getBoundingClientRect().top <= 160) current = section.id;
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+    </script>
+</body>
+</html>

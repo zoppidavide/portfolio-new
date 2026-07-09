@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disruptive: The challenge of rebuilding</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="project-detail">
+            <div class="detail-left">
+                <a href="index.html" class="action-btn back-btn">
+                    <img src="./images/arrow-back-20.svg" class="btn-icon" alt="" />
+                    <span>Back</span>
+                </a>
+                <div class="detail-nav-group">
+                    <a class="detail-left-title" href="#summary">Disruptive: The challenge of rebuilding</a>
+                    <nav class="detail-nav">
+                        <a href="#problem">Rethinking digital exhibitions</a>
+                        <a href="#assumptions">Assumption &amp; Ideas</a>
+                        <a href="#research">Research</a>
+                        <a href="#solutions">Solutions</a>
+                        <a href="#impact">Impact &amp; outcomes</a>
+                        <a href="#reflection">Reflection and key learnings</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="detail-right">
+                <div class="project-image-wrapper">
+                    <img class="project-image" src="./images/Disruptive_thumbnail.png" alt="Disruptive: The challenge of rebuilding" />
+                </div>
+                <h2 id="summary" class="detail-title">Disruptive: The challenge of rebuilding</h2>
+                <p class="detail-body">"The challenge of rebuilding" is a design-centered digital first exhibition born in 2020 from a group of university students, while facing the uncertainties of a generation looking ahead.</br>Team: Federico Pozzi, Marco Pari, Andrea Silvano, Giovanni Clericetti, Alice Bocchio, Michele Bruno</p>
+                <h3 id="problem" class="detail-subtitle">Rethinking digital exhibitions</h3>
+                <p class="detail-body">Visual, experience and experiential design seamlessly blend with storytelling giving birth to an engaging and fascinating 360º experience.
+Thanks to original content, such as illustrations, video-interviews and other digital content, Disruptive is a completely new way of exploring and approaching the great rebuilding challenge that awaits.</p>
+                <div class="simple-image-wrapper">
+                    <img class="simple-image" src="./images/disruptive_2.png" alt="website preview" />
+                </div>
+                <p class="detail-body">Satispay's app had a complex and confusing information architecture, leading to user frustration and decreased engagement. The navigation was not intuitive, and users struggled to find the features they needed, resulting in a poor user experience and potential loss of customers.</p>  
+            </div>
+        </div>
+    </div>
+    <script>
+        // Sidebar title reveal
+        const detailTitle = document.querySelector('.detail-title');
+        const sidebarTitle = document.querySelector('.detail-left-title');
+
+        if (detailTitle && sidebarTitle) {
+            const observer = new IntersectionObserver(
+                ([entry]) => sidebarTitle.classList.toggle('visible', !entry.isIntersecting),
+                { threshold: 0, rootMargin: '-20px 0px 0px 0px' }
+            );
+            observer.observe(detailTitle);
+        }
+
+        // Scroll-spy for nav links
+        const navLinks = document.querySelectorAll('.detail-nav a');
+        const sectionIds = Array.from(navLinks).map(l => l.getAttribute('href').slice(1));
+        const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+        function updateActiveNav() {
+            let current = null;
+            sections.forEach(section => {
+                if (section.getBoundingClientRect().top <= 160) current = section.id;
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+    </script>
+</body>
+</html>

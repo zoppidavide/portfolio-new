@@ -139,6 +139,10 @@ h1 {
     gap: 20px;
 }
 
+.project + .project {
+    padding-top: 60px;
+}
+
 .project-content {
     grid-column: 3 / span 3;
     display: flex;
@@ -151,7 +155,13 @@ h1 {
     aspect-ratio: 537.5 / 302.34;
     border-radius: 24.25px;
     border: 1.52px solid #DCDCDC;
+    background-color: #007bff;
     overflow: hidden;
+}
+
+.simple-image-wrapper {
+    width: 100%;
+    aspect-ratio: 537.5 / 302.34;
 }
 
 .project-image {
@@ -160,6 +170,12 @@ h1 {
     object-fit: cover;
     display: block;
     transition: transform 0.3s ease;
+}
+
+.simple-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .project-image-wrapper:hover .project-image {
@@ -286,8 +302,8 @@ h1 {
     margin: 0;
 }
 
-/* Make project card a link */
-a.project {
+/* Make project card content a link */
+a.project-content {
     text-decoration: none;
     color: inherit;
     cursor: pointer;

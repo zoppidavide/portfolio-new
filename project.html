@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rebuilding Satispay app IA – Davide Zoppi</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,9 +42,9 @@
                
                 <h2 id="summary" class="detail-title">Rebuilding Satispay app information architecture</h2>
                 <div class="project-image-wrapper">
-                    <img class="project-image" src="./images/Image 16_9.png" alt="Rebuilding Satispay app information architecture" />
+                    <img class="project-image" src="./images/architecture-cover.png" alt="Rebuilding Satispay app information architecture" />
                 </div>
-                <p class="detail-body">Launched in 2015, Satispay set out to disrupt the European fintech landscape by introducing an independent payment network. By building a proprietary infrastructure, it successfully bypassed traditional banks and issuing circuits like Visa and Mastercard, significantly reducing transaction fees for merchants and enabling seamless micro-payments for everyday users.<br><br> By 2025, Satispay had grown into a big player, with over 5 million users and a network of 350,000+ merchants.To sustain this rapid growth and unlock new revenue streams, Satispay evolved from a payment tool into a multi-service financial app, expanding into meal vouchers, personal savings, PA payments, and more services.</p>
+                <p class="detail-body">Launched in 2015, Satispay set out to disrupt the European fintech landscape by introducing an independent payment network. By building a proprietary infrastructure, it successfully bypassed traditional banks and issuing circuits like Visa and Mastercard, significantly reducing transaction fees for merchants and enabling seamless micro-payments for everyday users.<br><br> By 2025, Satispay had grown into a big player, with over 5 million users and a network of 350,000+ merchants. To sustain this rapid growth and unlock new revenue streams, Satispay evolved from a payment tool into a multi-service financial app, expanding into meal vouchers, personal savings, PA payments, and more services.</p>
                 
 
                 <h3 id="problem" class="detail-subtitle">The problem</h3>
@@ -65,22 +74,29 @@
 
                 <h3 id="solutions" class="detail-subtitle">Solutions</h3>
                 <p class="detail-body">The proposed solution features 5 tabs: Home, Accounts, Savings, Investments and Services. Along this primary navigation a “Pay Button” entry point to all the main payments flows.<br><br>The Home page is meant to be a place where user can check their balances to start a new operation as quickly as possible. While Accounts tab is the place where all the balances and other wallets of the user can be managed simply, giving the user more space.<br><br>All the other tabs are then developed on a vertical theme, so that the user can save, invest or discover services.</p>
-                <div class="project-image-wrapper">
-                    <img class="project-image" src="./images/Image 16_9.png" alt="Rebuilding Satispay app information architecture" />
+                <div class="fluid-image-wrapper">
+                    <img class="fluid-image" src="./images/architecture-solution.png" alt="Rebuilding Satispay app information architecture" />
                 </div>
 
 
                 <h3 id="impact" class="detail-subtitle">Impact</h3>
                 <p class="detail-body">
-                 The redesign successfully validated the new Home experience with zero negative impact on primary metrics or core user segments. For new users, the updated flow directly boosted activation and revenue metrics, driving higher overall transaction volume, increased spend, and growth in generated fees. 
-                 <br><br>
+                The redesign successfully validated the new Home experience with zero negative impact on primary metrics or core user segments. For new users, the updated flow directly boosted activation and revenue metrics, driving higher overall transaction volume, increased spend, and growth in generated fees. 
+                </p>
+                <div class="fluid-image-wrapper">
+                    <img class="fluid-image" src="./images/architecture-rollout.png" alt="Rebuilding Satispay app information architecture" />
+                </div>
+                <p class="detail-body"> 
                 Additionally, analyzing downstream user behavior revealed valuable engagement shifts across secondary features. For instance, taps on the <em>Savings</em> tab increased as users actively navigated to check their total balance, turning an architectural shift into a catalyst for organic feature discovery without increasing user friction.
                 </p>
 
 
                 <h3 id="reflection" class="detail-subtitle">Reflections and key learnings</h3>
+                <div class="fluid-image-wrapper">
+                    <img class="fluid-image" src="./images/architecture-impact.png" alt="Rebuilding Satispay app information architecture" />
+                </div>
                 <p class="detail-body">
-                Isolating key high-intent data points, metrics users actively check—created a strategic opportunity to surface relevant product features without disrupting the core user flow. 
+                Isolating key high-intent data points, metrics users actively check created a strategic opportunity to surface relevant product features without disrupting the core user flow. 
                 <br><br>
                 By placing high-value offerings alongside high-visibility touchpoints, we seamlessly exposed users to context-aware features, such as setting up an <em>Invested Money Box</em>. This strategy turned routine balance checks into moments of organic product discovery, directly supporting our monetization and cross-selling goals.
                 </p>

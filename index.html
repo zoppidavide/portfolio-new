@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Davide - Product Designer</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,6 +20,17 @@
 </head>
 <body>
     <div class="top-fade"></div>
+    <button type="button" class="theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark mode">
+        <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+            <span class="theme-toggle-icon theme-toggle-icon-sun">
+                <img src="./images/sun-shine-20.svg" alt="" />
+            </span>
+            <span class="theme-toggle-icon theme-toggle-icon-moon">
+                <img src="./images/moon-light-20.svg" alt="" />
+            </span>
+        </span>
+    </button>
     <div class="container">
         <div class="content">
             <div class="intro">
@@ -19,7 +39,7 @@
                 </div>
                 <div class="text-section">
                     <h1>Hi! I'm Davide</h1>
-                    <p>Product Designer @<a href="https://www.satispay.com" target="_blank" rel="noopener noreferrer">Satispay</a> with over 3 years of experience within product companies and freelance projects.</p>
+                    <p>Product Designer @ <a href="https://www.satispay.com" target="_blank" rel="noopener noreferrer">Satispay</a> with over 3 years of experience within product companies and freelance projects.</p>
                     <div class="actions">
                         <a class="action-btn resume-btn" href="./files/DavideZoppi-CV.pdf" target="_blank" rel="noopener noreferrer">
                             <img src="./images/paper-document-20.svg" alt="Resume" class="btn-icon" />
@@ -82,5 +102,31 @@
             </div>
         </div>
     </div>
+    <script>
+        (function () {
+            var root = document.documentElement;
+            var toggle = document.getElementById('theme-toggle');
+
+            function sync() {
+                var isDark = root.getAttribute('data-theme') === 'dark';
+                toggle.setAttribute('aria-checked', String(isDark));
+                toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+            }
+
+            sync();
+
+            toggle.addEventListener('click', function () {
+                var isDark = root.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    root.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    root.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                sync();
+            });
+        })();
+    </script>
 </body>
 </html>

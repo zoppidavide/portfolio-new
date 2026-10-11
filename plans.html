@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans: Satispay premium subscriptions – Davide Zoppi</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!--
+        DRAFT — content sources: Notion (Consumer Premium Plans Hub, Satispay Plus BIA,
+        Metal & Velvet | Design brief, Paywall A/B tests, Weekly Steering + Weekly Data Update)
+        and Figma file "👑 Plans" (page 🦄 Design, node 2001:131).
+
+        Image placeholders reuse "Image 16_9.png" like project.html does.
+        Each one has a comment with the Figma section to export.
+
+        Numbers marked [VERIFY] are internal metrics: double-check them and confirm
+        with Satispay what can be shared publicly before publishing.
+    -->
+    <div class="top-fade"></div>
+    <div class="container">
+        <div class="project-detail">
+            <div class="detail-left">
+                <a href="index.html" class="action-btn back-btn">
+                    <img src="./images/arrow-back-20.svg" class="btn-icon" alt="" />
+                    <span>Back</span>
+                </a>
+                <div class="detail-nav-group">
+                    <a class="detail-left-title" href="#summary">Plans: from one premium plan to three</a>
+                    <nav class="detail-nav">
+                        <a href="#problem">The problem</a>
+                        <a href="#research">Research</a>
+                        <a href="#solutions">Solutions</a>
+                        <a href="#impact">Impact &amp; outcomes</a>
+                        <a href="#reflection">Reflections and key learnings</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="detail-right">
+
+                <h2 id="summary" class="detail-title">Plans: from one premium plan to three</h2>
+                <div class="project-image-wrapper">
+                    <img class="project-image" src="./images/Plans_thumbnail.png" alt="Satispay Plus, Metal and Velvet plans" />
+                </div>
+                <p class="detail-body">Since its launch in 2015, Satispay's revenue has been tied to transactions, so it rises and falls with the seasons and with how much people spend each month. As the app grew into a full financial companion, with cards, IBAN, savings and investments, the company needed a steadier, recurring revenue stream. It also needed a broader offer to compete with Revolut and N26, which already sold tiered premium plans.<br><br>The answer was a subscription program. It started in December 2025 with <strong>Plus</strong> (€3.99/month), a single plan built around everyday savings: free instant top-ups, free Business Up payments, extra Points on every purchase and reduced investment fees. In July 2026 it became a three-tier offer, adding <strong>Metal</strong> (€12.99/month) and <strong>Velvet</strong> (€45.99/month), each with its own Mastercard card, airport lounge access and partner perks.<br><br>As the product designer of the Growth domain, I designed every experience in the plans: how users discover them, how they choose and subscribe, how they manage, switch and cancel, and how they use their perks, from airport lounges and Fast Track to partner subscriptions.</p>
+
+
+                <h3 id="problem" class="detail-subtitle">The problem</h3>
+                <!-- IMAGE: Figma › Home + Entry Point (17283:588265) — Home and Profile, free user vs Plus / Metal / Velvet -->
+                <div class="project-image-wrapper">
+                    <img class="project-image" src="./images/Image 16_9.png" alt="Plan entry points across Home and Profile" />
+                </div>
+                <p class="detail-body">Satispay users are used to an app that's free and fast. Asking them to pay a monthly fee meant every screen had to show clear value, without slowing down the payment flows they open the app for.<br><br>Going from one plan to three made this harder in three ways:</p>
+                <ul class="detail-body">
+                    <li><strong>Choice:</strong> the top tier bundled up to 15 benefits across Points, investing, cards, insurance, travel and partner subscriptions. The paywall had to explain all of it without overloading people.</li>
+                    <li><strong>Discovery:</strong> users had to understand what a plan gives them in a few seconds, at the right moment, without the app feeling like an ad. Every entry point said "Plus", and all of them had to work for any plan.</li>
+                    <li><strong>Lifecycle:</strong> upgrades, downgrades and cancellations each have their own rules (a 14-day withdrawal period, pro-rata refunds, and card and lounge costs if you leave within 10 months). We had to make all of that easy to understand, and stay compliant with EU consumer law.</li>
+                </ul>
+
+
+                <h3 id="research" class="detail-subtitle">Research</h3>
+                <p class="detail-body">We were asking people to pay for something they'd always had for free, so we involved users before building and kept testing after launch.</p>
+                <ul class="detail-body">
+                    <li><strong>Competitive analysis:</strong> I mapped the subscription journeys of Revolut, N26 and Monzo, plus subscription-led products like Duolingo, Gemini and Preply. Using familiar patterns lowered the risk of a first-ever paid offer.</li>
+                    <li><strong>Benefit preference tests:</strong> we ran rounds of tests with users to find out which benefits they valued most. In a survey with over 700 users, people repeatedly picked the most and least important benefit from small sets drawn from 11 categories. Video streaming and cinema came out on top, followed by news. Most people cared about three to five types of service, so we focused each plan on a few strong benefits instead of the longest possible list. <!-- [VERIFY] MaxDiff survey, results shared 6 Feb 2026; follow-up round planned on younger age groups --></li>
+                    <li><strong>Paywall A/B tests:</strong> we tested a paywall that led with how much you'd save against one that listed features. The difference wasn't significant, and that told us the layout mattered more than the message. The next test, a two-step paywall inspired by Revolut, raised conversion by over 30% and became the base for all three plans. <!-- [VERIFY] ">30% uplift" from 2 Apr 2026 steering --></li>
+                </ul>
+                <!-- IMAGE: competitor benchmark board (Figma "34. Satispay Plus" › node 8001:290) or the two A/B paywall variants -->
+                <div class="project-image-wrapper">
+                    <img class="project-image" src="./images/Image 16_9.png" alt="Competitive benchmark of subscription paywalls" />
+                </div>
+
+
+                <h3 id="solutions" class="detail-subtitle">Solutions</h3>
+                <p class="detail-body"><strong>Discovery through balanced upsells.</strong> Discovery relies mostly on upsells and banners placed where a benefit makes sense, so users get the picture quickly. Each touchpoint shows one benefit, at the moment users feel the cost of not having it: right after paying a top-up fee, on a Business Up payment, or on the Points page. A frequency cap keeps them from feeling pushy.</p>
+                <!-- IMAGE: Figma › Cross-sell › Free Instant top-up (15033:45431) — Accounts › Balance › Top-up › Paywall -->
+                <div class="fluid-image-wrapper">
+                    <img class="fluid-image" src="./images/Image 16_9.png" alt="Contextual upsell during an instant top-up" />
+                </div>
+                <p class="detail-body"><strong>A paywall built to compare.</strong> Plus, Metal and Velvet sit in tabs on one screen. Each tab leads with its card, the strongest visual difference between tiers, followed by its three or four best benefits. The full list is one tap away. Choosing monthly or annual billing happens in a second step, in a bottom sheet, so the first screen only has to answer one question: which plan is right for me?</p>
+                <!-- IMAGE: Figma › Subscribe to a plan (18166:146523) — paywall tabs, billing bottom sheet, welcome screens -->
+                <div class="fluid-image-wrapper">
+                    <img class="fluid-image" src="./images/Image 16_9.png" alt="Plus, Metal and Velvet paywall with billing selection" />
+                </div>
+                <p class="detail-body"><strong>A visual identity for each plan.</strong> Each plan has its own color: Plus blue, Metal silver and Velvet. The color carries through the avatar ring, the badge on the Profile page and the welcome screen. That way your plan stays visible across the app, and free users get a clear but quiet "Upgrade" entry point in the same spot.</p>
+                <p class="detail-body"><strong>Clear rules for switching and cancelling.</strong> Upgrades take effect right away, with no extra steps, and the refund for the old plan appears in the activity list. We chose fewer taps over a preview here, because the user is getting more. Downgrades and cancellations are the opposite: they always end on a recap that shows what you'll lose, what you'll get back, and any card or lounge costs, before you confirm. A short survey at the end tells us why people leave.</p>
+                <!-- IMAGE: Figma › Upgrade flow (17283:589098) + Unsubscribe flow (17283:586740) -->
+                <div class="fluid-image-wrapper">
+                    <img class="fluid-image" src="./images/Image 16_9.png" alt="Upgrade, downgrade and unsubscribe flows" />
+                </div>
+                <p class="detail-body"><strong>Perks you use inside the app.</strong> Metal and Velvet include access to 1,000+ airport lounges through DragonPass, plus Fast Track at security. The whole experience happens in Satispay: search an airport, browse lounges, buy or claim a pass and show a QR code at the entrance. No emails and no third-party app. Partner subscriptions like Corriere della Sera, La Gazzetta dello Sport and NordVPN are activated from the plan page in a few taps.</p>
+                <!-- IMAGE: Figma › Lounge - Light (17680:141422) + Fast track - Light (18575:150276) -->
+                <div class="fluid-image-wrapper">
+                    <img class="fluid-image" src="./images/Image 16_9.png" alt="In-app airport lounge flow" />
+                </div>
+
+
+                <h3 id="impact" class="detail-subtitle">Impact</h3>
+                <!-- [VERIFY] internal metrics: confirm what can be shared publicly before publishing. -->
+                <p class="detail-body">In about seven months, the program grew from around 2,000 to 25,000 subscribers across the three plans. That's around €900k in annual recurring revenue from a business line that didn't exist a year earlier.</p>
+                <ul class="detail-body">
+                    <li><strong>Paywall conversion:</strong> after the redesigned paywall and the new benefits, conversion at full price stayed above the 2% target for weeks in a row and peaked at 3%.</li>
+                    <li><strong>Upsell touchpoints:</strong> the upsells brought in 1,900 subscribers in their first month and hit their target. The Points page got the most clicks, and the instant top-up moment converted best.</li>
+                    <li><strong>Retention:</strong> 30-day rolling churn dropped from 10% to 6% as new benefits were added.</li>
+                    <li><strong>Premium tiers:</strong> about 80% of Metal subscribers ordered the physical card within the first weeks.</li>
+                </ul>
+                <!-- IMAGE: subscriber growth / paywall conversion chart (re-draw from Hex dashboard, no raw internal screenshots) -->
+                <div class="fluid-image-wrapper">
+                    <img class="fluid-image" src="./images/Image 16_9.png" alt="Subscriber growth after launch" />
+                </div>
+
+
+                <h3 id="reflection" class="detail-subtitle">Reflections and key learnings</h3>
+                <p class="detail-body"><strong>Plans are now part of how people use Satispay.</strong> Plans started as an add-on and are now part of the Satispay ecosystem: the card, savings, investments and payments all connect to them. The clearest sign is that close to 30% of new users choose a plan when they start using the app.</p>
+                <p class="detail-body"><strong>Retention matters more than the benefit list.</strong> Most partner perks were used by fewer than 10% of subscribers. The big exception was NordVPN, at around 40%. A long list of benefits helps someone subscribe, but they stay for the few benefits they use every week. The next step is to point each subscriber to those benefits early, instead of adding more.</p>
+                <p class="detail-body"><strong>Some churn isn't a decision.</strong> A large share of early cancellations came from users who didn't have enough balance on renewal day. They hadn't chosen to leave. Letting the renewal pull the missing amount from the user's bank account fixed this at the system level, which no cancellation screen could.</p>
+                <p class="detail-body"><strong>Be clear about the hard parts.</strong> Withdrawal periods, pro-rata refunds and card costs are the moments where a subscription loses or earns trust. Spelling out the numbers on every downgrade and cancellation, even when it added a step, was always worth it.</p>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        // Sidebar title reveal
+        const detailTitle = document.querySelector('.detail-title');
+        const sidebarTitle = document.querySelector('.detail-left-title');
+
+        if (detailTitle && sidebarTitle) {
+            const observer = new IntersectionObserver(
+                ([entry]) => sidebarTitle.classList.toggle('visible', !entry.isIntersecting),
+                { threshold: 0, rootMargin: '-20px 0px 0px 0px' }
+            );
+            observer.observe(detailTitle);
+        }
+
+        // Scroll-spy for nav links
+        const navLinks = document.querySelectorAll('.detail-nav a');
+        const sectionIds = Array.from(navLinks).map(l => l.getAttribute('href').slice(1));
+        const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+        function updateActiveNav() {
+            let current = null;
+            sections.forEach(section => {
+                if (section.getBoundingClientRect().top <= 160) current = section.id;
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+    </script>
+    <script src="reveal.js"></script>
+</body>
+</html>

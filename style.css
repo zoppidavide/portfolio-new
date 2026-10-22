@@ -298,6 +298,18 @@ h1 {
     display: block;
 }
 
+.project-image-wrapper.parallax {
+    position: relative;
+}
+
+.project-image-wrapper.parallax .project-image {
+    position: absolute;
+    top: -5%;
+    left: 0;
+    height: 110%;
+    will-change: translate;
+}
+
 .project-image-wrapper:hover .project-image {
     transform: scale(1.05);
 }

@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paid plans in Satispay – Davide Zoppi</title>
+    <meta name="description" content="Case study: designing Satispay's paid plans, from one premium plan to three. Product Designer, Davide Zoppi.">
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!--
+        DRAFT v2 — structure after emanuelececcherini.com/bnpl, layout after benji.org.
+        Builds on plans.html. Image slots are .ph placeholders: each label says what to export
+        and from which Figma section of "👑 Plans".
+        All numbers are internal Satispay metrics [VERIFY + confirm they can be shared].
+    -->
+    <style>
+        :root {
+            --plus: #2F7BF6;
+            --metal: #8B9097;
+            --velvet: #7A2233;
+            --accent: var(--plus);
+            --track: #EDEDED;
+        }
+        :root[data-theme="dark"] {
+            --plus: #5A9BFF;
+            --metal: #B4B8BE;
+            --velvet: #C2566A;
+            --track: #262626;
+        }
+
+        /* ---------- Header ---------- */
+        .eyebrow {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.2;
+            letter-spacing: -0.04px;
+            margin: 0 0 8px;
+        }
+        .case-title {
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.25;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
+            text-wrap: balance;
+            margin: 0;
+        }
+        .case-lede {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -0.09px;
+            padding-top: 8px;
+        }
+        .meta {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            padding: 24px 0 0;
+        }
+        .meta dt {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 16px;
+        }
+        .meta dd {
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 18px;
+            margin-top: 2px;
+        }
+
+        hr.rule {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 48px 0 0;
+        }
+        .section-label {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 16px;
+            letter-spacing: 0.2px;
+            padding-top: 36px;
+            font-variant-numeric: tabular-nums;
+        }
+        .section-label + .detail-subtitle { padding-top: 4px; }
+        .detail-subtitle em, .case-title em {
+            font-style: normal;
+            color: var(--text-secondary);
+        }
+        h4.minor {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 20px;
+            color: var(--text-primary);
+            padding-top: 28px;
+        }
+
+        /* ---------- Image placeholders ---------- */
+        .ph {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 24px;
+            border: 1px dashed var(--border);
+            background:
+                repeating-linear-gradient(135deg, transparent 0 11px, var(--surface) 11px 12px),
+                var(--bg);
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 16px;
+            margin: 24px 0 8px;
+        }
+        .ph.tall { aspect-ratio: 4 / 3; }
+        .ph.square { aspect-ratio: 1 / 1; margin: 0; }
+        .ph span {
+            font-size: 12px;
+            line-height: 16px;
+            color: var(--text-secondary);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 4px 10px;
+        }
+        .caption {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 16px;
+            text-align: center;
+            margin: 0 0 24px;
+        }
+        .ph-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 24px 0 8px;
+        }
+
+        /* ---------- Data cards ---------- */
+        .card {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 20px;
+            margin: 24px 0 8px;
+        }
+        .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 18px;
+        }
+        .card-note {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 16px;
+        }
+        .hint {
+            font-size: 12px;
+            line-height: 16px;
+            color: var(--text-secondary);
+            margin-top: 14px;
+        }
+
+        /* KPI strip */
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            margin: 32px 0 8px;
+        }
+        .kpi {
+            background: var(--surface);
+            padding: 18px 16px 16px;
+        }
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.6px;
+            line-height: 28px;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        .kpi-label {
+            font-size: 12px;
+            line-height: 16px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Segmented controls */
+        .seg {
+            display: inline-flex;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 3px;
+            gap: 2px;
+        }
+        .seg button {
+            font: 500 13px/18px 'Inter', sans-serif;
+            color: var(--text-secondary);
+            background: transparent;
+            border: 0;
+            border-radius: 100px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .seg button[aria-pressed="true"] {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+        .seg button:focus-visible, .chip:focus-visible, .perk:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* Perk game */
+        .perk-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+        }
+        .perk {
+            font: 500 13px/18px 'Inter', sans-serif;
+            text-align: left;
+            color: var(--text-primary);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 12px;
+            cursor: pointer;
+            min-height: 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 6px;
+            transition: border-color 0.2s ease, transform 0.2s ease, opacity 0.3s ease;
+        }
+        .perk:hover { transform: translateY(-1px); }
+        .perk small {
+            font-weight: 400;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .perk.picked { border-color: var(--text-primary); }
+        .perk-results { display: none; margin-top: 4px; }
+        .perk-results.show { display: block; }
+        .rank-row {
+            display: grid;
+            grid-template-columns: 20px 112px 1fr 44px;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--text-primary);
+            padding: 5px 0;
+        }
+        .rank-row .n { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+        .rank-row .v { text-align: right; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+        .rank-row.you .name::after {
+            content: "you";
+            font-size: 10px;
+            margin-left: 6px;
+            padding: 1px 6px;
+            border-radius: 100px;
+            background: var(--text-primary);
+            color: var(--bg);
+            vertical-align: 1px;
+        }
+        .bar {
+            height: 8px;
+            border-radius: 100px;
+            background: var(--track);
+            overflow: hidden;
+        }
+        .bar i {
+            display: block;
+            height: 100%;
+            width: 0;
+            border-radius: inherit;
+            background: var(--text-primary);
+            transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .bar.tier i { background: var(--text-secondary); opacity: 0.45; }
+        .perk-verdict {
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        .linkish {
+            font: 500 12px/16px 'Inter', sans-serif;
+            color: var(--text-secondary);
+            background: none;
+            border: 0;
+            padding: 0;
+            margin-top: 12px;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* A/B */
+        .ab-stage { position: relative; }
+        .ab-stage .ph { margin: 0; aspect-ratio: 4 / 3; }
+        .ab-variant { display: none; }
+        .ab-variant.active { display: block; animation: fadeIn 0.35s ease; }
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            line-height: 16px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: var(--text-primary);
+            color: var(--bg);
+            margin-left: 6px;
+        }
+        .ab-copy {
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            min-height: 36px;
+        }
+        .uplift {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .uplift > div {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 14px;
+        }
+
+        /* Plan explorer */
+        .plan-card {
+            --accent: var(--plus);
+            transition: none;
+        }
+        .plan-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .plan-body {
+            display: grid;
+            grid-template-columns: 148px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        .plan-visual {
+            aspect-ratio: 85.6 / 54;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #000));
+            position: relative;
+            box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--accent) 70%, transparent);
+            transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+            margin-top: 4px;
+        }
+        .plan-visual::after {
+            content: "";
+            position: absolute;
+            left: 12px;
+            top: 14px;
+            width: 18px;
+            height: 13px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.55);
+        }
+        .plan-visual.flip { transform: rotate(-4deg) scale(1.03); }
+        .plan-name {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .plan-price {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.8px;
+            line-height: 34px;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+        .plan-price small {
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0;
+            color: var(--text-secondary);
+        }
+        .plan-save {
+            font-size: 12px;
+            line-height: 16px;
+            color: var(--text-secondary);
+            min-height: 16px;
+        }
+        .plan-list {
+            list-style: none;
+            margin-top: 12px;
+            display: grid;
+            gap: 6px;
+        }
+        .plan-list li {
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--text-primary);
+            padding-left: 18px;
+            position: relative;
+            animation: fadeIn 0.35s ease both;
+        }
+        .plan-list li::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 6px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+        .plan-list li.new::after {
+            content: "new";
+            font-size: 10px;
+            color: var(--accent);
+            margin-left: 6px;
+        }
+
+        /* Touchpoints */
+        .tp-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            align-items: center;
+        }
+        .tp-row .ph { margin: 0; aspect-ratio: 9 / 16; max-height: 300px; }
+        .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+        .chip {
+            font: 500 12px/16px 'Inter', sans-serif;
+            color: var(--text-secondary);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+        .chip[aria-pressed="true"] { color: var(--text-primary); border-color: var(--text-primary); }
+        .tp-moment { font-size: 13px; line-height: 18px; color: var(--text-primary); }
+        .tp-moment b { font-weight: 600; }
+        .tp-signal {
+            margin-top: 12px;
+            display: grid;
+            gap: 8px;
+        }
+        .rank { display: inline-flex; align-items: center; gap: 4px; }
+        .rank i { width: 18px; height: 8px; border-radius: 100px; background: var(--track); transition: background-color 0.3s ease; }
+        .rank i.on { background: var(--text-primary); }
+        .rank b { font-weight: 500; color: var(--text-primary); margin-left: 6px; font-size: 12px; }
+        .tp-signal div { display: grid; grid-template-columns: 84px 1fr; gap: 8px; align-items: center; font-size: 12px; color: var(--text-secondary); }
+
+        /* Switch simulator */
+        .sim-controls { display: grid; gap: 10px; margin-bottom: 16px; }
+        .sim-controls label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+        .sim-out {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 16px;
+            display: grid;
+            gap: 10px;
+        }
+        .sim-line {
+            display: grid;
+            grid-template-columns: 96px 1fr;
+            gap: 10px;
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--text-primary);
+        }
+        .sim-line span:first-child { color: var(--text-secondary); }
+        .sim-kind {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .seg button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        /* Growth chart */
+        .chart-wrap { position: relative; }
+        .chart-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+        .chart-line {
+            fill: none;
+            stroke: var(--text-primary);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .chart-area { fill: var(--text-primary); opacity: 0.06; }
+        .chart-grid { stroke: var(--border); stroke-width: 1; }
+        .chart-axis { fill: var(--text-secondary); font: 400 10px 'Inter', sans-serif; }
+        .chart-event line { stroke: var(--text-secondary); stroke-dasharray: 2 3; opacity: 0.6; }
+        .chart-event text { fill: var(--text-secondary); font: 500 10px 'Inter', sans-serif; }
+        .chart-dot { fill: var(--surface); stroke: var(--text-primary); stroke-width: 2; }
+        .chart-focus { fill: var(--text-primary); }
+        .tooltip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background: var(--text-primary);
+            color: var(--bg);
+            font-size: 12px;
+            line-height: 16px;
+            padding: 6px 10px;
+            border-radius: 10px;
+            white-space: nowrap;
+            transform: translate(-50%, -130%);
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        .tooltip b { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+        /* Gauge + churn + perks usage */
+        .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0 8px; }
+        .duo .card { margin: 0; }
+        .meter {
+            position: relative;
+            height: 10px;
+            border-radius: 100px;
+            background: var(--track);
+            margin: 18px 0 8px;
+        }
+        .meter i {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 0;
+            border-radius: inherit;
+            background: var(--text-primary);
+            transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .meter .target {
+            position: absolute;
+            top: -6px;
+            bottom: -6px;
+            width: 2px;
+            background: var(--text-secondary);
+            border-radius: 2px;
+        }
+        .meter-scale {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
+        }
+        .big-num {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.8px;
+            line-height: 34px;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+        .churn-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 14px;
+            height: 92px;
+            margin-top: 14px;
+        }
+        .churn-bars div { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+        .churn-bars i {
+            display: block;
+            width: 100%;
+            height: 0;
+            border-radius: 10px 10px 4px 4px;
+            background: var(--text-primary);
+            transition: height 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .churn-bars div:first-child i { background: var(--text-secondary); opacity: 0.4; }
+        .churn-bars span { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+
+        /* People grid */
+        .people {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 6px;
+            margin: 8px 0 4px;
+        }
+        .people i {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: var(--track);
+            transition: background-color 0.4s ease, transform 0.4s ease;
+        }
+        .people i.on { background: var(--accent); transform: scale(1.06); }
+        .people i.on.metal { background: var(--metal); }
+        .people i.on.velvet { background: var(--velvet); }
+
+        /* Learnings + next */
+        .learn {
+            display: grid;
+            gap: 12px;
+            margin: 24px 0 8px;
+        }
+        .learn article {
+            border-top: 1px solid var(--border);
+            padding-top: 14px;
+        }
+        .learn h4 {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 20px;
+            color: var(--text-primary);
+        }
+        .learn p {
+            font-size: 14px;
+            line-height: 20px;
+            color: var(--text-primary);
+            padding-top: 4px;
+        }
+        .learn .num {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .next-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 24px 0 8px;
+        }
+        .next {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .next .status {
+            align-self: flex-start;
+            font-size: 11px;
+            line-height: 16px;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 1px 8px;
+        }
+        .next h4 { font-size: 14px; font-weight: 600; line-height: 20px; color: var(--text-primary); }
+        .next p { font-size: 13px; line-height: 18px; color: var(--text-secondary); }
+
+        .next-project {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            margin-top: 48px;
+            padding-top: 20px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        .next-project small { display: block; color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
+        .next-project span:last-child { color: var(--text-secondary); transition: transform 0.2s ease; }
+        .next-project:hover span:last-child { transform: translateX(4px); }
+
+        .v2-in { opacity: 0; transform: translateY(20px); filter: blur(6px);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+        .v2-in.is-visible { opacity: 1; transform: none; filter: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+        .detail-nav a .idx { font-variant-numeric: tabular-nums; margin-right: 6px; opacity: 0.6; }
+
+        @media (max-width: 640px) {
+            .meta { grid-template-columns: 1fr 1fr; row-gap: 14px; }
+            .kpis { grid-template-columns: 1fr 1fr; }
+            .perk-grid { grid-template-columns: 1fr 1fr; }
+            .plan-body { grid-template-columns: 1fr; }
+            .plan-visual { width: 160px; }
+            .tp-row, .duo, .next-grid, .ph-pair, .uplift { grid-template-columns: 1fr; }
+            .tp-row .ph { max-height: 220px; aspect-ratio: 4 / 3; }
+            .rank-row { grid-template-columns: 18px 96px 1fr 40px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .v2-in { opacity: 1; transform: none; filter: none; transition: none; }
+            .bar i, .meter i, .churn-bars i { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-fade"></div>
+    <div class="container">
+        <div class="project-detail">
+            <div class="detail-left">
+                <a href="index.html" class="action-btn back-btn">
+                    <img src="./images/arrow-back-20.svg" class="btn-icon" alt="" />
+                    <span>Back</span>
+                </a>
+                <div class="detail-nav-group">
+                    <a class="detail-left-title" href="#summary">Paid plans in Satispay</a>
+                    <nav class="detail-nav">
+                        <a href="#brief"><span class="idx">01</span>Brief</a>
+                        <a href="#research"><span class="idx">02</span>Research</a>
+                        <a href="#ab"><span class="idx">03</span>A/B tests</a>
+                        <a href="#screens"><span class="idx">04</span>Key experiences</a>
+                        <a href="#impact"><span class="idx">05</span>Impact</a>
+                        <a href="#learnings"><span class="idx">06</span>Learnings</a>
+                        <a href="#next"><span class="idx">07</span>What's next</a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="detail-right">
+
+                <!-- ============ HEADER ============ -->
+                <p class="eyebrow v2-in">Satispay · Growth</p>
+                <h2 id="summary" class="case-title detail-title">Paid plans in Satispay: from one plan to three</h2>
+                <p class="case-lede v2-in">Turning a free payments app into a subscription business with Plus, Metal and Velvet.</p>
+
+                <dl class="meta v2-in">
+                    <div><dt>Role</dt><dd>Product Designer, Growth</dd></div>
+                    <div><dt>Timeline</dt><dd>2025 → ongoing</dd></div>
+                    <div><dt>Platform</dt><dd>iOS · Android</dd></div>
+                    <div><dt>Team</dt><dd>PM · Mobile · BE · Legal · Finance · Marketing</dd></div>
+                </dl>
+
+                <!-- IMAGE: hero, Plans_thumbnail.png or a fresh export of the three paywall tabs -->
+                <div class="project-image-wrapper">
+                    <img class="project-image" src="./images/Plans_thumbnail.png" alt="Satispay Plus, Metal and Velvet paywalls" />
+                </div>
+
+                <!-- [VERIFY] KPIs: internal metrics -->
+                <div class="kpis v2-in" aria-label="Key results">
+                    <div class="kpi"><div class="kpi-value" data-count="25000" data-format="k">0</div><div class="kpi-label">Subscribers</div></div>
+                    <div class="kpi"><div class="kpi-value" data-count="900" data-prefix="€" data-suffix="k">0</div><div class="kpi-label">Annual recurring revenue</div></div>
+                    <div class="kpi"><div class="kpi-value" data-count="3" data-suffix="%" data-decimals="1">0</div><div class="kpi-label">Peak paywall conversion</div></div>
+                    <div class="kpi"><div class="kpi-value" data-count="30" data-prefix="~" data-suffix="%">0</div><div class="kpi-label">New users who pick a plan</div></div>
+                </div>
+
+
+                <!-- ============ 01 BRIEF ============ -->
+                <hr class="rule">
+                <p class="section-label">01 · Brief</p>
+                <h3 id="brief" class="detail-subtitle">Why paid plans, <em>why now</em></h3>
+
+                <h4 class="minor">The problem</h4>
+                <p class="detail-body">Since its launch in 2015, Satispay's revenue has been tied to transactions, so it rises and falls with the seasons and with how much people spend each month. As the app grew into a full financial companion, with cards, IBAN, savings and investments, the company needed a steadier, recurring revenue stream. It also needed a broader offer to compete with Revolut and N26, which already sold tiered premium plans.</p>
+
+                <h4 class="minor">The solution</h4>
+                <p class="detail-body">A subscription program, built in two steps. <strong>Plus</strong> launched in December 2025 at €3.99/month, built around everyday savings. In July 2026 it became a three-tier offer with <strong>Metal</strong> (€12.99/month) and <strong>Velvet</strong> (€45.99/month), each with its own Mastercard card, airport lounge access and partner perks.<br><br>As the product designer of the Growth domain, I designed every experience in the plans: how users discover them, choose and subscribe, manage, switch and cancel, and how they use their perks, from airport lounges and Fast Track to partner subscriptions.</p>
+
+                <h4 class="minor">The constraints</h4>
+                <ul class="detail-body">
+                    <li><strong>Choice:</strong> the top tier bundled up to 15 benefits. The paywall had to explain them without overloading people.</li>
+                    <li><strong>Discovery:</strong> users had to understand what a plan gives them in a few seconds, at the right moment, without the app feeling like an ad.</li>
+                    <li><strong>Lifecycle:</strong> upgrades, downgrades and cancellations each follow their own rules: a 14-day withdrawal period, pro-rata refunds, and card and lounge costs if you leave within 10 months. All of it had to be easy to read and compliant with EU consumer law.</li>
+                </ul>
+
+
+                <!-- ============ 02 RESEARCH ============ -->
+                <hr class="rule">
+                <p class="section-label">02 · Research</p>
+                <h3 id="research" class="detail-subtitle">What would people <em>pay for?</em></h3>
+                <p class="detail-body">We were asking people to pay for something they'd always had for free. Before designing the tiers, I mapped the subscription journeys of Revolut, N26 and Monzo, plus subscription-led products like Duolingo, Gemini and Preply. Using familiar patterns lowered the risk of a first-ever paid offer.<br><br>Then we ran rounds of tests with users to find out which benefits they valued most. In a survey with over 700 users, people repeatedly picked the most and least important benefit from small sets drawn from 11 categories. Try it yourself:</p>
+
+                <!-- [VERIFY] MaxDiff survey, shared 6 Feb 2026. Only the top two shares are exact; the rest are rank tiers. -->
+                <div class="card v2-in" id="perk-game">
+                    <div class="card-head">
+                        <span class="card-title">Which perk would make you subscribe?</span>
+                        <span class="card-note">Pick one</span>
+                    </div>
+                    <div class="perk-grid" id="perk-grid"></div>
+                    <div class="perk-results" id="perk-results">
+                        <p class="perk-verdict" id="perk-verdict"></p>
+                        <div id="perk-ranks"></div>
+                        <button class="linkish" id="perk-reset" type="button">Pick again</button>
+                    </div>
+                </div>
+                <p class="caption">Share of times each category was picked as most important, 700+ respondents. Grey bars show rank only</p>
+
+                <p class="detail-body">Video streaming and cinema carried over half of all preferences, with news in second place. VPNs sat near the bottom. Most people cared about three to five types of service, so we focused each plan on a few strong benefits instead of the longest possible list.</p>
+
+                <!-- IMAGE: competitor benchmark board (Figma "34. Satispay Plus" › node 8001:290) -->
+                <div class="ph"><span>Image · Competitive benchmark of subscription paywalls</span></div>
+                <p class="caption">Benchmark of premium plan journeys across fintech and subscription apps</p>
+
+
+                <!-- ============ 03 A/B ============ -->
+                <hr class="rule">
+                <p class="section-label">03 · A/B tests</p>
+                <h3 id="ab" class="detail-subtitle">Layout beat <em>messaging</em></h3>
+                <p class="detail-body">The first test pitted a paywall that led with how much you'd save against one that listed features. The difference wasn't significant, and that told us the layout mattered more than the message. So the second test changed the structure: a two-step paywall inspired by Revolut, where you pick a plan first and billing second.</p>
+
+                <div class="card v2-in">
+                    <div class="card-head">
+                        <span class="seg" role="group" aria-label="Paywall version">
+                            <button type="button" data-ab="a" aria-pressed="false">Version A</button>
+                            <button type="button" data-ab="b" aria-pressed="true">Version B</button>
+                        </span>
+                        <span class="card-note" id="ab-tag">Winner</span>
+                    </div>
+                    <div class="ab-stage">
+                        <!-- IMAGE: Version A, single-step feature list paywall (Notion: Paywall A/B Test V2 › Control) -->
+                        <div class="ab-variant" data-variant="a"><div class="ph"><span>Image · Version A, single-step paywall</span></div></div>
+                        <!-- IMAGE: Version B, two-step paywall (Notion: Paywall A/B Test V2 › Treatment) -->
+                        <div class="ab-variant active" data-variant="b"><div class="ph"><span>Image · Version B, two-step paywall</span></div></div>
+                    </div>
+                    <p class="ab-copy" id="ab-copy">Plan first, billing second. Each step answers one question, so the long benefit list never sits on one screen.</p>
+                    <!-- [VERIFY] +30% (2 Apr 2026 steering); +60% / +45% conversion with new benefits (same notes) -->
+                    <div class="uplift">
+                        <div><div class="big-num" data-count="30" data-prefix="+" data-suffix="%">0</div><div class="card-note">Conversion, two-step vs single-step</div></div>
+                        <div><div class="big-num" data-count="60" data-prefix="+" data-suffix="%">0</div><div class="card-note">Conversion at full price after adding new benefits</div></div>
+                    </div>
+                </div>
+                <p class="detail-body">Version B rolled out to everyone and became the base for all three plans. Adding insurance and the newspaper subscriptions on top lifted full-price conversion by a further 60%.</p>
+
+
+                <!-- ============ 04 KEY EXPERIENCES ============ -->
+                <hr class="rule">
+                <p class="section-label">04 · Key experiences</p>
+                <h3 id="screens" class="detail-subtitle">Where the <em>design lives</em></h3>
+                <p class="detail-body">Four surfaces carried most of the work: discovery, the paywall, plan management and the perks themselves.</p>
+
+                <h4 class="minor">Discovery through balanced upsells</h4>
+                <p class="detail-body">Discovery relies mostly on upsells and banners placed where a benefit makes sense, so users get the picture quickly. Each touchpoint shows one benefit, at the moment users feel the cost of not having it. A frequency cap keeps them from feeling pushy.</p>
+
+                <!-- [VERIFY] signals from 7 May 2026 data update: Points page = most clicks, top-up = best click-to-subscribe, Business Up = lowest -->
+                <div class="card v2-in" id="touchpoints">
+                    <div class="tp-row">
+                        <div>
+                            <div class="chips" role="group" aria-label="Upsell touchpoint">
+                                <button class="chip" type="button" data-tp="points" aria-pressed="true">Points page</button>
+                                <button class="chip" type="button" data-tp="topup" aria-pressed="false">Instant top-up</button>
+                                <button class="chip" type="button" data-tp="bu" aria-pressed="false">Business Up</button>
+                            </div>
+                            <p class="tp-moment" id="tp-moment"></p>
+                            <div class="tp-signal">
+                                <div><span>Clicks</span><span class="rank" id="tp-click"></span></div>
+                                <div><span>Subscriptions</span><span class="rank" id="tp-conv"></span></div>
+                            </div>
+                            <p class="hint">Ranking across the three touchpoints</p>
+                        </div>
+                        <!-- IMAGE: one upsell screen per touchpoint (Figma › Cross-sell: Free Instant top-up 15033:45431, Free Business up 15033:45657, 40% more Points 15033:45759) -->
+                        <div class="ph" id="tp-ph"><span>Image · Points page upsell</span></div>
+                    </div>
+                </div>
+                <p class="detail-body">In their first month, the upsells brought in 1,900 subscribers and hit their target.</p>
+
+                <h4 class="minor">A paywall built to compare</h4>
+                <p class="detail-body">Plus, Metal and Velvet sit in tabs on one screen. Each tab leads with its card, the strongest visual difference between tiers, followed by its best benefits. Billing comes in a second step, so the first screen only has to answer one question: which plan is right for me?</p>
+
+                <div class="card plan-card v2-in" id="plans">
+                    <div class="plan-top">
+                        <span class="seg" role="group" aria-label="Plan">
+                            <button type="button" data-plan="plus" aria-pressed="true">Plus</button>
+                            <button type="button" data-plan="metal" aria-pressed="false">Metal</button>
+                            <button type="button" data-plan="velvet" aria-pressed="false">Velvet</button>
+                        </span>
+                        <span class="seg" role="group" aria-label="Billing">
+                            <button type="button" data-bill="m" aria-pressed="true">Monthly</button>
+                            <button type="button" data-bill="y" aria-pressed="false">Annual</button>
+                        </span>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-visual" id="plan-visual" aria-hidden="true"></div>
+                        <div>
+                            <div class="plan-name" id="plan-name">Plus</div>
+                            <div class="plan-price" id="plan-price">€3.99 <small>/ month</small></div>
+                            <div class="plan-save" id="plan-save"></div>
+                            <ul class="plan-list" id="plan-list"></ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="caption">A simplified version of the paywall. Benefits shown are the headline ones for each tier</p>
+
+                <!-- IMAGE: Figma › Subscribe to a plan (18166:146523): paywall tabs, billing bottom sheet, welcome screens -->
+                <div class="ph"><span>Image · Paywall tabs, billing sheet and welcome screens</span></div>
+
+                <p class="detail-body"><strong>A visual identity for each plan.</strong> Each plan has its own color: Plus blue, Metal silver and Velvet. The color carries through the avatar ring, the badge on the Profile page and the welcome screen. That way your plan stays visible across the app, and free users get a clear but quiet "Upgrade" entry point in the same spot.</p>
+                <!-- IMAGE: Figma › Home + Entry Point (17283:588265): Profile with free / Plus / Metal / Velvet badges -->
+                <div class="ph"><span>Image · Profile badges for each plan</span></div>
+
+                <h4 class="minor">Clear rules for switching and cancelling</h4>
+                <p class="detail-body">Upgrades take effect right away, with no extra steps, and the old plan's refund appears in the activity list. We chose fewer taps over a preview, because the user is getting more. Downgrades and cancellations are the opposite: they always end on a recap with what you'll lose, what you'll get back and any card or lounge costs. Try a change:</p>
+
+                <div class="card v2-in" id="sim">
+                    <div class="sim-controls">
+                        <div>
+                            <label>You're on</label>
+                            <span class="seg" role="group" aria-label="Current plan">
+                                <button type="button" data-from="plus" aria-pressed="false">Plus</button>
+                                <button type="button" data-from="metal" aria-pressed="true">Metal</button>
+                                <button type="button" data-from="velvet" aria-pressed="false">Velvet</button>
+                            </span>
+                        </div>
+                        <div>
+                            <label>You move to</label>
+                            <span class="seg" role="group" aria-label="New plan">
+                                <button type="button" data-to="free" aria-pressed="false">Free</button>
+                                <button type="button" data-to="plus" aria-pressed="true">Plus</button>
+                                <button type="button" data-to="metal" aria-pressed="false">Metal</button>
+                                <button type="button" data-to="velvet" aria-pressed="false">Velvet</button>
+                            </span>
+                        </div>
+                        <div>
+                            <label>When</label>
+                            <span class="seg" role="group" aria-label="Timing">
+                                <button type="button" data-when="early" aria-pressed="false">Within 14 days</button>
+                                <button type="button" data-when="late" aria-pressed="true">After 14 days</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="sim-out" aria-live="polite">
+                        <div class="sim-kind" id="sim-kind"></div>
+                        <div class="sim-line"><span>Takes effect</span><span id="sim-when"></span></div>
+                        <div class="sim-line"><span>You get back</span><span id="sim-refund"></span></div>
+                        <div class="sim-line"><span>You pay</span><span id="sim-pay"></span></div>
+                        <div class="sim-line"><span>Recap shows</span><span id="sim-recap"></span></div>
+                    </div>
+                    <p class="hint">Monthly billing. Every combination maps to a designed screen.</p>
+                </div>
+
+                <!-- IMAGE: Figma › Upgrade flow (17283:589098) + Downgrade flow (17283:585215) + Unsubscribe flow (17283:586740) -->
+                <div class="ph"><span>Image · Upgrade, downgrade and unsubscribe flows</span></div>
+                <p class="caption">One flow per combination, including what you'll lose, the refund recap and a short exit survey</p>
+
+                <h4 class="minor">Perks you use inside the app</h4>
+                <p class="detail-body">Metal and Velvet include access to 1,000+ airport lounges through DragonPass, plus Fast Track at security. The whole experience happens in Satispay: search an airport, browse lounges, buy or claim a pass and show a QR code at the entrance. No emails and no third-party app. Partner subscriptions like Corriere della Sera, La Gazzetta dello Sport and NordVPN are activated from the plan page in a few taps.</p>
+                <div class="ph-pair">
+                    <!-- IMAGE: Figma › Lounge - Light (17680:141422) -->
+                    <div class="ph tall" style="margin:0"><span>Image · Lounge search and QR pass</span></div>
+                    <!-- IMAGE: Figma › Fast track - Light (18575:150276) -->
+                    <div class="ph tall" style="margin:0"><span>Image · Fast Track pass</span></div>
+                </div>
+                <p class="caption">Lounge and Fast Track, from search to boarding pass, fully in-app</p>
+
+
+                <!-- ============ 05 IMPACT ============ -->
+                <hr class="rule">
+                <p class="section-label">05 · Impact</p>
+                <h3 id="impact" class="detail-subtitle">From 2,000 to <em>25,000</em></h3>
+                <p class="detail-body">In about seven months, the program grew from around 2,000 to 25,000 subscribers across the three plans. That's around €900k in annual recurring revenue from a business line that didn't exist a year earlier. Hover the line to see what moved it.</p>
+
+                <!-- [VERIFY] data points from Weekly Steering / Weekly Data Update; last point = "25k today" -->
+                <div class="card v2-in" id="growth">
+                    <div class="card-head">
+                        <span class="card-title">Subscribers across all plans</span>
+                        <span class="card-note">2026</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <svg id="growth-svg" viewBox="0 0 540 240" role="img" aria-label="Subscribers grew from about 2,000 in March to 25,000 in October 2026"></svg>
+                        <div class="tooltip" id="growth-tip"></div>
+                    </div>
+                </div>
+
+                <div class="duo">
+                    <!-- [VERIFY] paywall CR: stable above 2% KR, peak 3% (full price only) -->
+                    <div class="card v2-in" id="gauge">
+                        <div class="card-title">Paywall conversion</div>
+                        <div class="big-num" data-count="3" data-suffix="%" data-decimals="1">0</div>
+                        <div class="card-note">peak, full price</div>
+                        <div class="meter" aria-hidden="true"><i id="gauge-fill"></i><span class="target" style="left:50%"></span></div>
+                        <div class="meter-scale"><span>0%</span><span>2% target</span><span>4%</span></div>
+                    </div>
+                    <!-- [VERIFY] 30-day rolling churn 10% → 6% (23 Apr 2026) -->
+                    <div class="card v2-in" id="churn">
+                        <div class="card-title">30-day churn</div>
+                        <div class="big-num" data-count="6" data-suffix="%">0</div>
+                        <div class="card-note">down from 10%</div>
+                        <div class="churn-bars" aria-hidden="true">
+                            <div><i data-h="100"></i><span>Before new perks</span></div>
+                            <div><i data-h="60"></i><span>After</span></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="detail-body">After the redesigned paywall and the new benefits, conversion at full price stayed above the 2% target for weeks in a row and peaked at 3%. On the premium tiers, about 80% of Metal subscribers ordered the physical card within the first weeks.</p>
+
+
+                <!-- ============ 06 LEARNINGS ============ -->
+                <hr class="rule">
+                <p class="section-label">06 · Learnings</p>
+                <h3 id="learnings" class="detail-subtitle">What the data <em>taught me</em></h3>
+
+                <!-- [VERIFY] ~30% of new users choose a plan -->
+                <div class="card v2-in" id="people">
+                    <div class="card-head">
+                        <span class="card-title">New users who choose a plan</span>
+                        <span class="card-note" id="people-note">about 3 in 10</span>
+                    </div>
+                    <div class="people" id="people-grid" aria-hidden="true"></div>
+                </div>
+
+                <div class="learn">
+                    <article class="v2-in">
+                        <span class="num">01</span>
+                        <h4>Plans are now part of how people use Satispay</h4>
+                        <p>Plans started as an add-on and are now part of the Satispay ecosystem: the card, savings, investments and payments all connect to them. The clearest sign is that close to 30% of new users choose a plan when they start using the app.</p>
+                    </article>
+                    <article class="v2-in">
+                        <span class="num">02</span>
+                        <h4>Retention matters more than the benefit list</h4>
+                        <p>Most partner perks were used by fewer than 10% of subscribers. The big exception was NordVPN, at around 40%, even though it ranked near the bottom in the survey. A long list helps someone subscribe, but they stay for the few benefits they use every week.</p>
+                    </article>
+                    <article class="v2-in">
+                        <span class="num">03</span>
+                        <h4>Some churn isn't a decision</h4>
+                        <p>A large share of early cancellations came from users who didn't have enough balance on renewal day. They hadn't chosen to leave. Letting the renewal pull the missing amount from their bank account fixed this at the system level, which no cancellation screen could.</p>
+                    </article>
+                    <article class="v2-in">
+                        <span class="num">04</span>
+                        <h4>Be clear about the hard parts</h4>
+                        <p>Withdrawal periods, pro-rata refunds and card costs are where a subscription loses or earns trust. Spelling out the numbers on every downgrade and cancellation, even when it added a step, was always worth it.</p>
+                    </article>
+                </div>
+
+
+                <!-- ============ 07 WHAT'S NEXT ============ -->
+                <hr class="rule">
+                <p class="section-label">07 · What's next</p>
+                <h3 id="next" class="detail-subtitle">Where plans <em>go from here</em></h3>
+                <p class="detail-body">The program is live and generating signal every day. The direction for the next releases: meet people earlier, point them to the perks they'll actually use, and bring plans to more places.</p>
+
+                <!-- [VERIFY] roadmap items from steering notes (Jul–Oct 2026). Check what can be shared publicly. -->
+                <div class="next-grid">
+                    <div class="next v2-in">
+                        <span class="status">In progress</span>
+                        <h4>Plans at sign-up</h4>
+                        <p>Choosing a plan, with a free trial or a discount, right inside registration, so new users start with the full picture.</p>
+                    </div>
+                    <div class="next v2-in">
+                        <span class="status">Exploring</span>
+                        <h4>From eligible to active</h4>
+                        <p>Guiding each subscriber to the perks they're most likely to use, instead of showing everything to everyone.</p>
+                    </div>
+                    <div class="next v2-in">
+                        <span class="status">Exploring</span>
+                        <h4>New hero perks</h4>
+                        <p>Entertainment partners, the category users ranked highest, to make each tier easier to choose.</p>
+                    </div>
+                    <div class="next v2-in">
+                        <span class="status">Exploring</span>
+                        <h4>Plans through employers</h4>
+                        <p>Letting companies offer plans to their people as a benefit, with the same in-app experience.</p>
+                    </div>
+                </div>
+                <!-- IMAGE: optional, early concept for plans at sign-up -->
+                <div class="ph"><span>Image · Early concept, plan choice at sign-up</span></div>
+
+                <a class="next-project" href="project.html">
+                    <span><small>Next project</small>Rebuilding Satispay app information architecture</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function $(s, r) { return (r || document).querySelector(s); }
+        function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+        function press(group, btn) { $$('button', group).forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); }); }
+
+        /* ---------- Sidebar title + scroll spy (same as other pages) ---------- */
+        var detailTitle = $('.detail-title'), sidebarTitle = $('.detail-left-title');
+        if (detailTitle && sidebarTitle) {
+            new IntersectionObserver(function (e) { sidebarTitle.classList.toggle('visible', !e[0].isIntersecting); },
+                { threshold: 0, rootMargin: '-20px 0px 0px 0px' }).observe(detailTitle);
+        }
+        var navLinks = $$('.detail-nav a');
+        var sections = navLinks.map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); }).filter(Boolean);
+        function spy() {
+            var current = null;
+            sections.forEach(function (s) { if (s.getBoundingClientRect().top <= 160) current = s.id; });
+            navLinks.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+        }
+        window.addEventListener('scroll', spy, { passive: true });
+        spy();
+
+        /* ---------- Count-up ---------- */
+        function fmt(el, v) {
+            var d = +(el.dataset.decimals || 0);
+            var s;
+            if (el.dataset.format === 'k') s = v >= 1000 ? (v / 1000).toFixed(v >= 24950 ? 0 : 1).replace('.0', '') + 'k' : Math.round(v).toString();
+            else s = d ? v.toFixed(d) : Math.round(v).toString();
+            return (el.dataset.prefix || '') + s + (el.dataset.suffix || '');
+        }
+        function countUp(el) {
+            if (el.dataset.done) return;
+            el.dataset.done = '1';
+            var to = +el.dataset.count;
+            if (reduced) { el.textContent = fmt(el, to); return; }
+            var t0 = null, dur = 1400;
+            function step(t) {
+                if (!t0) t0 = t;
+                var p = Math.min(1, (t - t0) / dur);
+                var e = 1 - Math.pow(1 - p, 4);
+                el.textContent = fmt(el, to * e);
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        /* ---------- Reveal + on-visible hooks ---------- */
+        var hooks = {
+            gauge: function () { $('#gauge-fill').style.width = (3 / 4 * 100) + '%'; },
+            churn: function () { $$('#churn .churn-bars i').forEach(function (i) { i.style.height = i.dataset.h + '%'; }); },
+            growth: function () { drawGrowth(true); },
+            people: function () { fillPeople(); },
+            touchpoints: function () { setTP('points'); }
+        };
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (!en.isIntersecting) return;
+                var el = en.target;
+                el.classList.add('is-visible');
+                $$('[data-count]', el).forEach(countUp);
+                if (el.dataset && el.dataset.count) countUp(el);
+                if (hooks[el.id]) hooks[el.id]();
+                io.unobserve(el);
+            });
+        }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+        $$('.v2-in, .duo .card, #growth, #people, #touchpoints').forEach(function (el) { io.observe(el); });
+
+        /* ---------- 02 Perk game ---------- */
+        // Only streaming (32%) and cinema (21%) are exact survey shares; the rest are rank tiers.
+        var perks = [
+            { id: 'stream', name: 'Video streaming', ex: 'Netflix, Prime', share: 32, rank: 1 },
+            { id: 'cinema', name: 'Cinema tickets', ex: 'UCI', share: 21, rank: 2 },
+            { id: 'news', name: 'News', ex: 'Corriere, Gazzetta', tier: 'Second tier', rank: 3 },
+            { id: 'ai', name: 'AI tools', ex: 'Assistants', tier: 'Second tier', rank: 4 },
+            { id: 'food', name: 'Food delivery', ex: 'Delivery passes', tier: 'Mid table', rank: 5 },
+            { id: 'vpn', name: 'VPN', ex: 'NordVPN', tier: 'Near the bottom', rank: 11 }
+        ];
+        var grid = $('#perk-grid'), results = $('#perk-results');
+        perks.forEach(function (p) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'perk';
+            b.dataset.id = p.id;
+            b.innerHTML = '<span>' + p.name + '</span><small>' + p.ex + '</small>';
+            b.addEventListener('click', function () { pickPerk(p); });
+            grid.appendChild(b);
+        });
+        function pickPerk(p) {
+            $$('.perk', grid).forEach(function (b) {
+                b.classList.toggle('picked', b.dataset.id === p.id);
+                b.style.opacity = b.dataset.id === p.id ? '1' : '0.45';
+            });
+            var verdict;
+            if (p.rank === 1) verdict = 'Same as most people: streaming was picked first a third of the time.';
+            else if (p.rank === 2) verdict = 'Close. Cinema came second, and together with streaming it covered over half of all picks.';
+            else if (p.rank <= 4) verdict = 'A solid second-tier pick. News and AI mattered most to younger users.';
+            else if (p.rank === 5) verdict = 'Food delivery ranked higher among people who already order often.';
+            else verdict = 'An outlier pick in the survey. Yet it became the most used perk after launch.';
+            $('#perk-verdict').textContent = verdict;
+            var rows = perks.slice().sort(function (a, b) { return a.rank - b.rank; }).map(function (q) {
+                var w = q.share ? q.share / 32 * 100 : (q.rank <= 4 ? 34 : q.rank === 5 ? 24 : 8);
+                return '<div class="rank-row' + (q.id === p.id ? ' you' : '') + '">' +
+                    '<span class="n">' + (q.rank > 10 ? '…' : q.rank) + '</span>' +
+                    '<span class="name">' + q.name + '</span>' +
+                    '<span class="bar' + (q.share ? '' : ' tier') + '"><i data-w="' + w + '"></i></span>' +
+                    '<span class="v">' + (q.share ? q.share + '%' : '—') + '</span></div>';
+            }).join('');
+            $('#perk-ranks').innerHTML = rows;
+            results.classList.add('show');
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    $$('#perk-ranks .bar i').forEach(function (i) { i.style.width = i.dataset.w + '%'; });
+                });
+            });
+        }
+        $('#perk-reset').addEventListener('click', function () {
+            results.classList.remove('show');
+            $$('.perk', grid).forEach(function (b) { b.classList.remove('picked'); b.style.opacity = '1'; });
+        });
+
+        /* ---------- 03 A/B toggle ---------- */
+        var abCopy = {
+            a: 'Feature list on a single screen. Clear, but every benefit competes for attention at once.',
+            b: 'Plan first, billing second. Each step answers one question, so the long benefit list never sits on one screen.'
+        };
+        $$('[data-ab]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var v = btn.dataset.ab;
+                press(btn.parentNode, btn);
+                $$('.ab-variant').forEach(function (el) { el.classList.toggle('active', el.dataset.variant === v); });
+                $('#ab-copy').textContent = abCopy[v];
+                $('#ab-tag').textContent = v === 'b' ? 'Winner' : 'Control';
+            });
+        });
+
+        /* ---------- 04 Touchpoints ---------- */
+        var tps = {
+            points: { moment: '<b>On the Points page.</b> Right where users check what they earned, the upsell shows how many more points a plan would give them.', click: 1, conv: 2, ph: 'Points page upsell' },
+            topup: { moment: '<b>Right after an instant top-up fee.</b> The moment users pay €1 to top up, the upsell shows that with a plan it would have been free.', click: 2, conv: 1, ph: 'Instant top-up upsell' },
+            bu: { moment: '<b>On a Business Up payment.</b> The fee is small, and so was the pull: this touchpoint had the fewest clicks and subscriptions.', click: 3, conv: 3, ph: 'Business Up upsell' }
+        };
+        function setTP(id) {
+            var t = tps[id];
+            $('#tp-moment').innerHTML = t.moment;
+            function rk(n) { return '<i class="on"></i><i' + (n < 3 ? ' class="on"' : '') + '></i><i' + (n < 2 ? ' class="on"' : '') + '></i><b>' + ['1st', '2nd', '3rd'][n - 1] + '</b>'; }
+            $('#tp-click').innerHTML = rk(t.click);
+            $('#tp-conv').innerHTML = rk(t.conv);
+            $('#tp-ph span').textContent = 'Image · ' + t.ph;
+        }
+        $$('[data-tp]').forEach(function (btn) {
+            btn.addEventListener('click', function () { press(btn.parentNode, btn); setTP(btn.dataset.tp); });
+        });
+        $('#tp-moment').innerHTML = tps.points.moment;
+
+        /* ---------- 04 Plan explorer ---------- */
+        var plans = {
+            plus: { name: 'Plus', m: 3.99, y: 39.99, color: '--plus', perks: [
+                ['Free instant top-ups and Business Up'], ['2x Points on every purchase'], ['Reduced investment fees'],
+                ['Debit card included'], ['Corriere della Sera and Gazzetta'], ['Insurance and priority support']] },
+            metal: { name: 'Metal', m: 12.99, y: 129.99, color: '--metal', perks: [
+                ['Everything in Plus'], ['3x Points on every purchase'], ['Metal card, Mastercard World', 1],
+                ['Discounted airport lounge access', 1], ['NordVPN and WeRoad discounts', 1], ['Dedicated support', 1]] },
+            velvet: { name: 'Velvet', m: 45.99, y: 459.99, color: '--velvet', perks: [
+                ['Everything in Metal'], ['4x Points on every purchase'], ['Velvet card, Mastercard World Elite', 1],
+                ['Unlimited airport lounge access', 1], ['Unlimited top-ups and Business Up', 1], ['NordVPN and NordSecurity', 1]] }
+        };
+        var state = { plan: 'plus', bill: 'm' };
+        var planCard = $('#plans');
+        function euro(n) { return '€' + n.toFixed(2); }
+        function renderPlan(animate) {
+            var p = plans[state.plan];
+            planCard.style.setProperty('--accent', 'var(' + p.color + ')');
+            $('#plan-name').textContent = p.name;
+            var price = state.bill === 'm' ? p.m : p.y;
+            $('#plan-price').innerHTML = euro(price) + ' <small>/ ' + (state.bill === 'm' ? 'month' : 'year') + '</small>';
+            var saving = p.m * 12 - p.y;
+            $('#plan-save').textContent = state.bill === 'y'
+                ? 'Save ' + euro(saving) + ' a year, about ' + Math.round(saving / p.m) + ' months free'
+                : 'or ' + euro(p.y) + ' billed yearly';
+            $('#plan-list').innerHTML = p.perks.map(function (x, i) {
+                return '<li' + (x[1] ? ' class="new"' : '') + ' style="animation-delay:' + (i * 40) + 'ms">' + x[0] + '</li>';
+            }).join('');
+            if (animate && !reduced) {
+                var v = $('#plan-visual');
+                v.classList.add('flip');
+                setTimeout(function () { v.classList.remove('flip'); }, 260);
+            }
+        }
+        $$('[data-plan]').forEach(function (btn) {
+            btn.addEventListener('click', function () { press(btn.parentNode, btn); state.plan = btn.dataset.plan; renderPlan(true); });
+        });
+        $$('[data-bill]').forEach(function (btn) {
+            btn.addEventListener('click', function () { press(btn.parentNode, btn); state.bill = btn.dataset.bill; renderPlan(false); });
+        });
+        renderPlan(false);
+
+        /* ---------- 04 Switch simulator ---------- */
+        var tier = { free: 0, plus: 1, metal: 2, velvet: 3 };
+        var price = { plus: 3.99, metal: 12.99, velvet: 45.99 };
+        var label = { free: 'Free', plus: 'Plus', metal: 'Metal', velvet: 'Velvet' };
+        var sim = { from: 'metal', to: 'plus', when: 'late' };
+        function renderSim() {
+            // disable "same plan" target
+            $$('[data-to]').forEach(function (b) { b.disabled = b.dataset.to === sim.from; });
+            if (sim.to === sim.from) {
+                sim.to = sim.from === 'plus' ? 'metal' : 'plus';
+                press($('[data-to]').parentNode, $('[data-to="' + sim.to + '"]'));
+            }
+            var up = tier[sim.to] > tier[sim.from], cancel = sim.to === 'free', early = sim.when === 'early';
+            var f = label[sim.from], t = label[sim.to];
+            var kind, when, refund, pay, recap;
+            if (up) {
+                kind = 'Upgrade to ' + t;
+                when = 'Right away, with the new benefits unlocked';
+                refund = early ? 'All of the ' + euro(price[sim.from]) + ' paid for ' + f : 'The unused days of ' + f;
+                pay = euro(price[sim.to]) + ' for ' + t + ', and the billing date resets';
+                recap = 'No recap: the refund appears in your activity list';
+            } else if (cancel) {
+                kind = 'Cancel ' + f;
+                when = early ? 'Right away' : 'At the end of the billing period';
+                refund = early ? 'All of the ' + euro(price[sim.from]) + ' paid' : 'Nothing on monthly, and you keep ' + f + ' until the period ends';
+                pay = sim.from === 'plus' ? 'Nothing more' : 'Card and lounge costs, if you used them and leave within 10 months';
+                recap = 'What you’ll lose, the refund, any extra costs and a short survey';
+            } else {
+                kind = 'Downgrade to ' + t;
+                when = early ? 'Right away' : 'When the current ' + f + ' period ends';
+                refund = early ? 'All of the ' + euro(price[sim.from]) + ' paid for ' + f : 'Nothing, and you keep ' + f + ' until then';
+                pay = euro(price[sim.to]) + ' for ' + t + (tier[sim.from] >= 2 ? ', plus card or lounge costs if they apply' : '');
+                recap = 'What you’ll lose, the refund and the new plan’s cost';
+            }
+            $('#sim-kind').textContent = kind;
+            $('#sim-when').textContent = when;
+            $('#sim-refund').textContent = refund;
+            $('#sim-pay').textContent = pay;
+            $('#sim-recap').textContent = recap;
+        }
+        $$('[data-from]').forEach(function (b) { b.addEventListener('click', function () { press(b.parentNode, b); sim.from = b.dataset.from; renderSim(); }); });
+        $$('[data-to]').forEach(function (b) { b.addEventListener('click', function () { if (b.disabled) return; press(b.parentNode, b); sim.to = b.dataset.to; renderSim(); }); });
+        $$('[data-when]').forEach(function (b) { b.addEventListener('click', function () { press(b.parentNode, b); sim.when = b.dataset.when; renderSim(); }); });
+        renderSim();
+
+        /* ---------- 05 Growth chart ---------- */
+        // day-of-year, subscribers [VERIFY]
+        var pts = [
+            { d: 85, v: 2005, label: '26 Mar' },
+            { d: 99, v: 5250, label: '9 Apr' },
+            { d: 106, v: 7823, label: '16 Apr' },
+            { d: 155, v: 12200, label: '4 Jun' },
+            { d: 197, v: 15787, label: '16 Jul' },
+            { d: 202, v: 17587, label: '21 Jul' },
+            { d: 285, v: 25000, label: 'Today' }
+        ];
+        var events = [
+            { d: 77, t: 'New perks' },
+            { d: 103, t: 'Upsells live' },
+            { d: 188, t: 'Metal & Velvet' }
+        ];
+        var W = 540, H = 240, L = 34, R = 12, T = 28, B = 26;
+        var d0 = 74, d1 = 288, vMax = 26000;
+        function X(d) { return L + (d - d0) / (d1 - d0) * (W - L - R); }
+        function Y(v) { return T + (1 - v / vMax) * (H - T - B); }
+        var svg = $('#growth-svg'), tip = $('#growth-tip');
+        var NS = 'http://www.w3.org/2000/svg';
+        function el(name, attrs, parent) {
+            var n = document.createElementNS(NS, name);
+            for (var k in attrs) n.setAttribute(k, attrs[k]);
+            (parent || svg).appendChild(n);
+            return n;
+        }
+        var drawn = false, focus;
+        function drawGrowth(animate) {
+            if (drawn) return;
+            drawn = true;
+            [0, 10000, 20000].forEach(function (v) {
+                el('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: 'chart-grid' });
+                var t = el('text', { x: L - 6, y: Y(v) + 3, 'text-anchor': 'end', class: 'chart-axis' });
+                t.textContent = v ? (v / 1000) + 'k' : '0';
+            });
+            [[91, 'Apr'], [152, 'Jun'], [213, 'Aug'], [274, 'Oct']].forEach(function (m) {
+                var t = el('text', { x: X(m[0]), y: H - 6, 'text-anchor': 'middle', class: 'chart-axis' });
+                t.textContent = m[1];
+            });
+            events.forEach(function (e, i) {
+                var g = el('g', { class: 'chart-event' });
+                el('line', { x1: X(e.d), x2: X(e.d), y1: T - 6 + (i % 2) * 12, y2: H - B }, g);
+                var t = el('text', { x: X(e.d) + 4, y: T - 8 + (i % 2) * 12 }, g);
+                t.textContent = e.t;
+            });
+            var dLine = pts.map(function (p, i) { return (i ? 'L' : 'M') + X(p.d).toFixed(1) + ' ' + Y(p.v).toFixed(1); }).join(' ');
+            el('path', { d: dLine + ' L' + X(pts[pts.length - 1].d) + ' ' + Y(0) + ' L' + X(pts[0].d) + ' ' + Y(0) + ' Z', class: 'chart-area' });
+            var line = el('path', { d: dLine, class: 'chart-line' });
+            pts.forEach(function (p) { el('circle', { cx: X(p.d), cy: Y(p.v), r: 3.5, class: 'chart-dot' }); });
+            focus = el('circle', { r: 5, class: 'chart-focus', cx: -20, cy: -20 });
+            if (animate && !reduced && line.getTotalLength) {
+                var len = line.getTotalLength();
+                line.style.strokeDasharray = len;
+                line.style.strokeDashoffset = len;
+                line.getBoundingClientRect();
+                line.style.transition = 'stroke-dashoffset 1.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                line.style.strokeDashoffset = '0';
+            }
+            var overlay = el('rect', { x: L, y: 0, width: W - L - R, height: H, fill: 'transparent' });
+            function show(clientX) {
+                var r = svg.getBoundingClientRect();
+                var sx = (clientX - r.left) / r.width * W;
+                var best = pts[0];
+                pts.forEach(function (p) { if (Math.abs(X(p.d) - sx) < Math.abs(X(best.d) - sx)) best = p; });
+                focus.setAttribute('cx', X(best.d));
+                focus.setAttribute('cy', Y(best.v));
+                tip.innerHTML = best.label + ' · <b>' + best.v.toLocaleString('en-US') + '</b>';
+                tip.style.left = (X(best.d) / W * r.width) + 'px';
+                tip.style.top = (Y(best.v) / H * r.height) + 'px';
+                tip.style.opacity = '1';
+            }
+            overlay.addEventListener('mousemove', function (e) { show(e.clientX); });
+            overlay.addEventListener('touchstart', function (e) { show(e.touches[0].clientX); }, { passive: true });
+            overlay.addEventListener('touchmove', function (e) { show(e.touches[0].clientX); }, { passive: true });
+            overlay.addEventListener('mouseleave', function () { tip.style.opacity = '0'; focus.setAttribute('cx', -20); });
+        }
+
+        /* ---------- 06 People grid ---------- */
+        var pg = $('#people-grid');
+        for (var i = 0; i < 30; i++) pg.appendChild(document.createElement('i'));
+        function fillPeople() {
+            var dots = $$('i', pg);
+            // 3 in 10 → 9 of 30 dots; colored by plan mix (mostly Plus)
+            var picks = [2, 7, 11, 14, 18, 21, 23, 26, 29];
+            picks.forEach(function (idx, n) {
+                setTimeout(function () {
+                    dots[idx].classList.add('on');
+                    if (n === 4) dots[idx].classList.add('metal');
+                    if (n === 7) dots[idx].classList.add('velvet');
+                }, reduced ? 0 : 120 * n);
+            });
+        }
+        $('#people').style.setProperty('--accent', 'var(--plus)');
+    })();
+    </script>
+    <script src="reveal.js"></script>
+    <script src="parallax.js"></script>
+</body>
+</html>

@@ -7,7 +7,8 @@
         '.detail-body',
         '.project-disclaimer',
         '.text-section',
-        '.project-info'
+        '.project-info',
+        '.site-footer'
     ].join(', ');
 
     var imageSelector = [

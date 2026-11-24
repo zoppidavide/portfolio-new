@@ -157,6 +157,71 @@ body {
     gap: 0;
 }
 
+/* Hero background: two soft colour glows that drift slowly around their spot */
+.hero-glows {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    /* taller than the hero, so the glows fade out instead of being cut at its bottom edge */
+    height: calc(100vh - var(--peek) + 600px);
+    height: calc(100svh - var(--peek) + 600px);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.hero-glow {
+    position: absolute;
+    width: 1000px;
+    height: 1000px;
+    margin: -500px 0 0 -500px; /* centre the glow on its left / top position */
+    border-radius: 50%;
+    will-change: transform;
+}
+
+.hero-glow-green {
+    left: 1.1%;
+    top: calc((100svh - var(--peek)) * 0.315);
+    background: radial-gradient(closest-side, rgba(64, 230, 61, 0.22), rgba(64, 230, 61, 0.17) 25%, rgba(64, 230, 61, 0.08) 50%, rgba(64, 230, 61, 0.02) 75%, rgba(64, 230, 61, 0));
+    animation: glow-drift-a 17s ease-in-out infinite alternate;
+}
+
+.hero-glow-purple {
+    left: 94.5%;
+    top: calc((100svh - var(--peek)) * 0.627);
+    background: radial-gradient(closest-side, rgba(133, 62, 227, 0.22), rgba(133, 62, 227, 0.17) 25%, rgba(133, 62, 227, 0.08) 50%, rgba(133, 62, 227, 0.02) 75%, rgba(133, 62, 227, 0));
+    animation: glow-drift-b 21s ease-in-out infinite alternate;
+}
+
+@keyframes glow-drift-a {
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(60px, -40px) scale(1.06); }
+    66%  { transform: translate(-30px, 50px) scale(0.96); }
+    100% { transform: translate(40px, 30px) scale(1.03); }
+}
+
+@keyframes glow-drift-b {
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(-50px, 40px) scale(0.95); }
+    66%  { transform: translate(35px, -45px) scale(1.07); }
+    100% { transform: translate(-40px, -30px) scale(1.02); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-glow {
+        animation: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-glow {
+        width: 640px;
+        height: 640px;
+        margin: -320px 0 0 -320px;
+    }
+}
+
 /* Hero: centred in the viewport, text on the 4 central columns */
 .intro {
     display: grid;
@@ -400,6 +465,39 @@ h1 {
     aspect-ratio: 537.5 / 302.34;
     border-radius: 24.25px;
     margin: 8px 0;
+}
+
+/* Coming soon: dark fade over the cover, with a sign in the lower half */
+.project-content.is-soon .project-image-wrapper {
+    position: relative;
+}
+
+.project-content.is-soon .project-image-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #000 100%);
+    pointer-events: none;
+}
+
+/* Slight blur on the cover only (the fade and the sign stay sharp). The scale hides the soft edges. */
+.project-content.is-soon .project-image,
+.project-content.is-soon .project-image-wrapper:hover .project-image {
+    filter: blur(2px);
+    transform: scale(1.06);
+}
+
+.project-soon-emoji {
+    position: absolute;
+    left: 50%;
+    top: 62%;
+    z-index: 1;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 64px;
+    line-height: normal;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 .project-image {
@@ -826,22 +924,6 @@ ul.detail-body li::before {
 
     .detail-right {
         grid-column: 3 / span 3;
-    }
-}
-
-/* Grid overlay (desktop): 6 columns in red at 5% opacity. Delete this block to hide it. */
-@media (min-width: 1101px) {
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: var(--grid-margin);
-        right: var(--grid-margin);
-        background-image: linear-gradient(90deg, rgba(255, 0, 0, 0.05) calc(100% - var(--grid-gutter)), transparent 0);
-        background-size: calc((100% + var(--grid-gutter)) / 6) 100%;
-        pointer-events: none;
-        z-index: 2000;
     }
 }
 

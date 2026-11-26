@@ -43,7 +43,7 @@
         setTimeout(function () { hero.classList.add('is-extra'); }, EXTRA_DELAY);
     }
 
-    // Wait for the fonts so the letters don't jump when Sagace swaps in.
+    // Wait for the fonts so the letters don't jump when Funnel Display swaps in.
     var started = false;
     function start() {
         if (started) return;

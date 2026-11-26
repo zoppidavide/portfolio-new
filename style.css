@@ -1,11 +1,3 @@
-@font-face {
-    font-family: 'Sagace';
-    src: url('./font/Sagace/TRIAL—Sagace-Medium.otf') format('opentype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -83,7 +75,7 @@ body {
     align-items: center;
     z-index: 1000;
     color: var(--text-primary);
-    font-family: 'Sagace', 'Inter', sans-serif;
+    font-family: 'Funnel Display', 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 500;
     line-height: normal;
@@ -248,9 +240,9 @@ body {
 
 h1 {
     color: var(--text-primary);
-    font-family: 'Sagace', 'Inter', sans-serif;
+    font-family: 'Funnel Display', 'Inter', sans-serif;
     font-size: 48px;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 52px;
     text-wrap: balance;
     word-wrap: break-word;
@@ -296,7 +288,7 @@ h1 {
 }
 
 .actions .action-btn {
-    font-family: 'Sagace', 'Inter', sans-serif;
+    font-family: 'Funnel Display', 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 500;
 }
@@ -589,7 +581,7 @@ h1 {
 
 .project-title {
     color: var(--text-primary);
-    font-family: 'Sagace', 'Inter', sans-serif;
+    font-family: 'Funnel Display', 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 500;
     line-height: normal;
@@ -605,7 +597,7 @@ h1 {
 
 .project-metric strong {
     color: var(--accent-blue);
-    font-family: 'Sagace', 'Inter', sans-serif;
+    font-family: 'Funnel Display', 'Inter', sans-serif;
     font-weight: 500;
 }
 
@@ -685,34 +677,45 @@ h1 {
     text-align: center;
 }
 
-/* Project detail page
-   Single reading column (spacing scheme after benji.org/agentation):
-   a fixed side rail with back link + contents, and a narrow article where
-   rhythm comes from padding (16px between paragraphs, 36px before sections). */
+/* Project detail pages (after the "Plans - Desktop" frame in Figma)
+   Desktop grid: 8 columns, 120px margins, 60px gutters.
+   Side rail in columns 1-2, article in columns 3-6, columns 7-8 stay free.
+   Mobile / tablet: one column, rail above the article. */
+:root {
+    --detail-margin: 120px;
+    --detail-gutter: 60px;
+    --placeholder: #ececec;
+}
+
+:root[data-theme="dark"] {
+    --placeholder: #1f1f1f;
+}
+
+.container:has(.project-detail) {
+    padding-top: 90px;
+}
+
 .project-detail {
     display: block;
-    max-width: 582px;
+    max-width: 570px;
     margin: 0 auto;
     padding-bottom: 80px;
 }
 
+/* Side rail */
 .detail-left {
-    position: fixed;
-    top: 10vh;
-    left: 80px;
-    width: 160px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
+    gap: 36px;
+    padding-bottom: 36px;
 }
 
 .detail-left .back-btn {
-    padding: 8px 14px;
-    font-family: 'Sagace', 'Inter', sans-serif;
-    font-size: 14px;
+    font-family: 'Funnel Display', 'Inter', sans-serif;
+    font-size: 16px;
     font-weight: 500;
-    line-height: 20px;
+    line-height: normal;
 }
 
 .detail-left .back-btn .btn-icon {
@@ -721,108 +724,93 @@ h1 {
 }
 
 .detail-nav-group {
-    display: flex;
+    display: none; /* shown on desktop only */
     flex-direction: column;
     width: 100%;
 }
 
-.detail-left-title {
+.detail-left-title,
+.detail-nav a {
     color: var(--text-secondary);
-    font-family: 'Sagace', 'Inter', sans-serif;
     font-size: 16px;
-    font-weight: 500;
-    line-height: 1.25;
+    font-weight: 400;
+    line-height: 18.2px;
     text-decoration: none;
-    opacity: 0;
-    margin-bottom: 16px;
-    transition: opacity 0.4s ease, color 0.1s ease;
+    transition: color 0.1s ease;
 }
 
-.detail-left-title:hover {
-    color: var(--text-primary);
+/* The page title in the rail fades in once the article title has scrolled out of view */
+.detail-left-title {
+    opacity: 0;
+    transition: opacity 0.4s ease, color 0.1s ease;
 }
 
 .detail-left-title.visible {
     opacity: 1;
 }
 
-.detail-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.detail-nav a {
-    color: var(--text-secondary);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.3;
-    text-decoration: none;
-    transition: color 0.1s ease;
-}
-
+.detail-left-title:hover,
 .detail-nav a:hover,
 .detail-nav a.active {
     color: var(--text-primary);
 }
 
+.detail-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 24px;
+}
+
+/* Article */
 .detail-right {
     display: flex;
     flex-direction: column;
     gap: 0;
 }
 
-.detail-right .project-image-wrapper:hover .project-image {
-    transform: none;
-}
-
-/* Media blocks: 24px above, 32px below */
-.detail-right .project-image-wrapper,
-.detail-right .simple-image-wrapper,
-.detail-right .fluid-image-wrapper,
-.detail-right .video-wrapper {
-    margin: 24px 0 32px;
-}
-
 .detail-title {
-    font-family: 'Sagace', 'Inter', sans-serif;
-    font-size: 32px;
-    font-weight: 500;
-    color: var(--text-primary);
-    line-height: 1.15;
     margin: 0;
-    text-wrap: balance;
+    color: var(--text-primary);
+    font-family: 'Funnel Display', 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 36.8px;
 }
 
 .detail-subtitle {
-    font-family: 'Sagace', 'Inter', sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--text-primary);
-    line-height: normal;
     margin: 0;
     padding-top: 48px;
+    color: var(--text-primary);
+    font-family: 'Funnel Display', 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: normal;
     text-wrap: balance;
 }
 
 .detail-body {
+    margin: 0;
+    padding-top: 16px;
     color: var(--text-primary);
     font-size: 16px;
     font-weight: 400;
-    line-height: 1.45;
-    margin: 0;
-    padding-top: 16px;
+    line-height: 23.2px;
 }
 
-/* Lists: small grey dots, 8px between items */
+.detail-body strong {
+    font-weight: 600;
+}
+
+/* Lists: 24px above, 16px below, 8px between items, small grey bullets */
 ul.detail-body {
     list-style: none;
-    padding: 24px 0 16px 20px;
+    padding: 24px 0 16px;
 }
 
 ul.detail-body li {
     position: relative;
-    padding: 0 0 8px 12px;
+    padding: 0 0 8px 32px;
 }
 
 ul.detail-body li:last-child {
@@ -832,8 +820,8 @@ ul.detail-body li:last-child {
 ul.detail-body li::before {
     content: "";
     position: absolute;
-    right: 100%;
-    top: 0.675em;
+    left: 16px;
+    top: 10.8px;
     width: 4px;
     height: 4px;
     border-radius: 50%;
@@ -841,35 +829,71 @@ ul.detail-body li::before {
     opacity: 0.6;
 }
 
-/* Spacing right after a heading / media block is handled by their own padding or margin */
-.project-image-wrapper + .detail-body,
-.fluid-image-wrapper + .detail-body,
-.video-wrapper + .detail-body {
+/* Media: 24px above, 32px below, 8px between the image and its caption.
+   Every image (placeholders too) has a caption. */
+.detail-media {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 24px 0 32px;
+}
+
+.detail-media > .project-image-wrapper,
+.detail-media > .simple-image-wrapper,
+.detail-media > .fluid-image-wrapper,
+.detail-media > .video-wrapper {
+    margin: 0;
+}
+
+.detail-media > .project-image-wrapper {
+    aspect-ratio: 570 / 303.75;
+}
+
+.detail-media .fluid-image,
+.detail-media .simple-image {
+    border-radius: 24.25px;
+}
+
+.detail-media > .project-image-wrapper:hover .project-image {
+    transform: none;
+}
+
+.detail-media .project-disclaimer {
+    margin: 0;
+    padding: 0 16px;
+    line-height: 15px;
+}
+
+/* Image placeholders: grey box with a label */
+.project-image-wrapper.is-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    background-color: var(--placeholder);
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+}
+
+.project-image-wrapper.is-placeholder p {
+    margin: 0;
+}
+
+/* What follows a media block already has its 32px, so text starts flush and a heading adds 16px (48px in total) */
+.detail-media + .detail-body {
     padding-top: 0;
 }
 
-/* A heading right after a media block already has 32px above it (48px in total) */
-.project-image-wrapper + .detail-subtitle,
-.fluid-image-wrapper + .detail-subtitle,
-.video-wrapper + .detail-subtitle {
+.detail-media + .detail-subtitle {
     padding-top: 16px;
 }
 
-/* Captions sit tight under their media, and keep the paragraph rhythm below */
-.detail-right .project-disclaimer {
-    padding-top: 0;
-}
-
-/* Side rail needs room: below this width it flows above the article */
-@media (max-width: 1100px) {
-    .detail-left {
-        position: static;
-        width: auto;
-        padding-bottom: 32px;
-    }
-
+/* Desktop: show the contents list in the rail */
+@media (min-width: 1101px) {
     .detail-nav-group {
-        display: none;
+        display: flex;
     }
 }
 
@@ -880,11 +904,21 @@ ul.detail-body li::before {
         padding: 10vh var(--grid-margin) 0;
     }
 
-    .content,
-    .project-detail {
+    .container:has(.project-detail) {
+        padding: 90px var(--detail-margin) 0;
+    }
+
+    .content {
         display: grid;
         grid-template-columns: repeat(6, minmax(0, 1fr));
         column-gap: var(--grid-gutter);
+        align-items: start;
+    }
+
+    .project-detail {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        column-gap: var(--detail-gutter);
         align-items: start;
         max-width: none;
         margin: 0;
@@ -915,15 +949,14 @@ ul.detail-body li::before {
 
     .detail-left {
         position: sticky;
-        top: 10vh;
-        left: auto;
-        width: auto;
+        top: 90px;
         grid-column: 1 / span 2;
         align-self: start;
+        padding-bottom: 0;
     }
 
     .detail-right {
-        grid-column: 3 / span 3;
+        grid-column: 3 / span 4;
     }
 }
 
@@ -945,7 +978,7 @@ ul.detail-body li::before {
     border-radius: 100px;
     background-color: var(--surface);
     color: var(--text-primary);
-    font-family: 'Sagace', 'Inter', sans-serif;
+    font-family: 'Funnel Display', 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 500;
     line-height: normal;
@@ -965,6 +998,23 @@ ul.detail-body li::before {
     width: 20px;
     height: 20px;
     display: block;
+}
+
+/* Grid overlay on the project pages (desktop): 8 columns in red at 5% opacity.
+   Delete this block to hide it. */
+@media (min-width: 1101px) {
+    body:has(.project-detail)::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: var(--detail-margin);
+        right: var(--detail-margin);
+        background-image: linear-gradient(90deg, rgba(255, 0, 0, 0.05) calc(100% - var(--detail-gutter)), transparent 0);
+        background-size: calc((100% + var(--detail-gutter)) / 8) 100%;
+        pointer-events: none;
+        z-index: 2000;
+    }
 }
 
 /* Make project card content a link */
@@ -1018,7 +1068,8 @@ a.project-content {
         --nav-inline: 20px;
     }
 
-    .container {
+    .container,
+    .container:has(.project-detail) {
         padding: 20px;
     }
 

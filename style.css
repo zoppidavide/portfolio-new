@@ -685,10 +685,18 @@ h1 {
     --detail-margin: 120px;
     --detail-gutter: 60px;
     --placeholder: #ececec;
+    --text-body: #3e3e3e;
+    --text-info: #0065c2;
+    --surface-elevated: #f6f6f6;
+    --stroke-info: #0080f5;
 }
 
 :root[data-theme="dark"] {
     --placeholder: #1f1f1f;
+    --text-body: #d2d2d2;
+    --text-info: #4da3ff;
+    --surface-elevated: #1a1a1a;
+    --stroke-info: #0080f5;
 }
 
 .container:has(.project-detail) {
@@ -773,8 +781,8 @@ h1 {
     margin: 0;
     color: var(--text-primary);
     font-family: 'Funnel Display', 'Inter', sans-serif;
-    font-size: 28px;
-    font-weight: 500;
+    font-size: 32px;
+    font-weight: 700;
     line-height: 36.8px;
 }
 
@@ -784,7 +792,7 @@ h1 {
     color: var(--text-primary);
     font-family: 'Funnel Display', 'Inter', sans-serif;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: normal;
     text-wrap: balance;
 }
@@ -799,6 +807,20 @@ h1 {
 }
 
 .detail-body strong {
+    font-weight: 600;
+}
+
+/* Intro text block: grey body copy, a blue lead-in line and 10px between paragraphs */
+.detail-body.is-soft {
+    color: var(--text-body);
+}
+
+.detail-text p + p {
+    margin-top: 10px;
+}
+
+.detail-lead {
+    color: var(--text-info);
     font-weight: 600;
 }
 
@@ -862,6 +884,136 @@ ul.detail-body li::before {
     margin: 0;
     padding: 0 16px;
     line-height: 15px;
+}
+
+/* Media surface: the same soft elevated surface as the Plans prototype frame.
+   It follows the theme (light / dark) and the image sits inside it with padding
+   and its natural proportions, so the rounded corners never cut the content. */
+.media-surface {
+    padding: 24px;
+    border-radius: 24px;
+    overflow: hidden;
+    background-color: var(--surface-elevated);
+    transition: background-color 0.3s ease;
+}
+
+/* keep the scroll-reveal fade-in and the theme colour fade together */
+.media-surface.reveal-image {
+    transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 0.3s ease;
+}
+
+.detail-media .media-surface .fluid-image {
+    height: auto;
+    border-radius: 0;
+}
+
+/* Full-bleed images (photos, screenshots with their own background) get a soft corner of their own */
+.detail-media .media-surface.is-photo .fluid-image {
+    border-radius: 12px;
+}
+
+@media (max-width: 480px) {
+    .media-surface {
+        padding: 16px;
+        border-radius: 20px;
+    }
+
+    .detail-media .media-surface.is-photo .fluid-image {
+        border-radius: 10px;
+    }
+}
+
+/* Links inside captions: underlined, darker on hover */
+.project-disclaimer a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.1s ease;
+}
+
+.project-disclaimer a:hover {
+    color: var(--text-primary);
+}
+
+/* Link button under the intro (e.g. "Visit the website") */
+.detail-actions {
+    padding-top: 24px;
+}
+
+.site-btn {
+    font-family: 'Funnel Display', 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.site-btn .btn-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Numbers section: three outlined cards, the values count up when they scroll into view */
+.detail-stats {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+}
+
+.stat {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 127px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background-color: var(--surface-elevated);
+    border-bottom: 1px solid var(--stroke-info);
+    border-radius: 24px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.stat-value {
+    margin: 0;
+    color: var(--text-info);
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 36.8px;
+    white-space: nowrap;
+}
+
+.stat-label {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: normal;
+}
+
+@media (max-width: 480px) {
+    .detail-stats {
+        gap: 8px;
+    }
+
+    .stat {
+        padding: 8px;
+        border-radius: 20px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+    }
 }
 
 /* Image placeholders: grey box with a label */
@@ -1000,23 +1152,6 @@ ul.detail-body li::before {
     display: block;
 }
 
-/* Grid overlay on the project pages (desktop): 8 columns in red at 5% opacity.
-   Delete this block to hide it. */
-@media (min-width: 1101px) {
-    body:has(.project-detail)::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: var(--detail-margin);
-        right: var(--detail-margin);
-        background-image: linear-gradient(90deg, rgba(255, 0, 0, 0.05) calc(100% - var(--detail-gutter)), transparent 0);
-        background-size: calc((100% + var(--detail-gutter)) / 8) 100%;
-        pointer-events: none;
-        z-index: 2000;
-    }
-}
-
 /* Make project card content a link */
 a.project-content {
     text-decoration: none;
@@ -1098,4 +1233,124 @@ a.project-content {
     .detail-nav {
         display: none;
     }
+}
+
+/* Interactive prototype frame (Plans › The challenge).
+   Matches the Figma "Competitive benchmark" card: soft elevated surface, 24px radius,
+   phone in the middle, light / dark switch in the upper right corner.
+   The frame has its own theme (data-theme) so the switch only affects the frame and the prototype. */
+.proto-frame {
+    --pf-bg: #f6f6f6;
+    --pf-track: #ffffff;
+    --pf-track-border: #dcdcdc;
+    --pf-thumb: #ececec;
+    position: relative;
+    width: 100%;
+    height: 680px;
+    border-radius: 24px;
+    overflow: hidden;
+    background-color: var(--pf-bg);
+    transition: background-color 0.3s ease;
+    /* Figma prototype-style touch cursor */
+    cursor: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2734%27%20height=%2734%27%20viewBox=%270%200%2034%2034%27%3E%3Ccircle%20cx=%2717.0%27%20cy=%2717.0%27%20r=%2714.5%27%20fill=%27none%27%20stroke=%27rgba%280%2C0%2C0%2C.28%29%27%20stroke-width=%271.5%27/%3E%3Ccircle%20cx=%2717.0%27%20cy=%2717.0%27%20r=%2712.25%27%20fill=%27rgba%28128%2C128%2C128%2C.5%29%27%20stroke=%27rgba%28255%2C255%2C255%2C.95%29%27%20stroke-width=%271.5%27/%3E%3C/svg%3E") 17 17, auto;
+}
+
+.proto-frame:active {
+    cursor: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2726%27%20height=%2726%27%20viewBox=%270%200%2026%2026%27%3E%3Ccircle%20cx=%2713.0%27%20cy=%2713.0%27%20r=%2710.5%27%20fill=%27none%27%20stroke=%27rgba%280%2C0%2C0%2C.28%29%27%20stroke-width=%271.5%27/%3E%3Ccircle%20cx=%2713.0%27%20cy=%2713.0%27%20r=%278.25%27%20fill=%27rgba%28128%2C128%2C128%2C.7%29%27%20stroke=%27rgba%28255%2C255%2C255%2C.95%29%27%20stroke-width=%271.5%27/%3E%3C/svg%3E") 13 13, auto;
+}
+
+.proto-frame[data-theme="dark"] {
+    --pf-bg: #1a1a1a;
+    --pf-track: #262626;
+    --pf-track-border: #3a3a3a;
+    --pf-thumb: #3a3a3a;
+}
+
+.proto-iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+}
+
+.proto-switch {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.proto-switch-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 60px;
+    height: 32px;
+    padding: 3px;
+    border-radius: 100px;
+    background-color: var(--pf-track);
+    border: 1px solid var(--pf-track-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.proto-switch-thumb {
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--pf-thumb);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    transform: translateY(-50%);
+    transition: transform 0.25s ease, background-color 0.3s ease;
+}
+
+.proto-switch[aria-checked="true"] .proto-switch-thumb {
+    transform: translateY(-50%) translateX(28px);
+}
+
+.proto-switch-icon {
+    position: relative;
+    z-index: 1;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.45;
+    transition: opacity 0.25s ease;
+}
+
+.proto-switch-icon img {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.proto-switch[aria-checked="false"] .proto-switch-icon-sun,
+.proto-switch[aria-checked="true"] .proto-switch-icon-moon {
+    opacity: 1;
+}
+
+.proto-switch:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+    border-radius: 100px;
+}
+
+/* keep the page's scroll-reveal fade-in and the theme colour fade together */
+.proto-frame.reveal-image {
+    transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 0.3s ease;
 }

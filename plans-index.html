@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plans page index – review</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Review aid only: outline of plans.html content (27 Nov 2026). Not linked from the site. -->
+<style>
+  :root { --bg:#fff; --text:#000; --muted:#717171; --border:#E6E6E6; --warn:#B25E00; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0d0d0d; --text:#f5f5f5; --muted:#a0a0a0; --border:#2a2a2a; --warn:#FFB35C; } }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); font-size:14px; line-height:20px; padding:56px 16px 96px; }
+  .wrap { max-width:680px; margin:0 auto; }
+  h1 { font-size:18px; font-weight:600; }
+  .sub { color:var(--muted); font-size:13px; margin-top:4px; }
+  section { margin-top:32px; }
+  h2 { display:flex; gap:10px; align-items:baseline; font-size:15px; font-weight:600; padding-bottom:8px; border-bottom:1px solid var(--text); }
+  h2 .n { color:var(--muted); font-size:12px; font-weight:500; font-variant-numeric:tabular-nums; }
+  h2 .imgs { margin-left:auto; color:var(--muted); font-size:12px; font-weight:400; }
+  .row { display:grid; grid-template-columns:220px 1fr; gap:16px; padding:9px 0; border-bottom:1px solid var(--border); }
+  .row b { font-weight:500; }
+  .row p { color:var(--muted); }
+  .warn { display:block; color:var(--warn); font-size:12px; line-height:16px; margin-top:3px; }
+  .warn::before { content:"⚠ "; }
+  .notes { margin-top:40px; }
+  .notes h2 { border-color:var(--warn); }
+  .notes li { list-style:none; padding:8px 0; border-bottom:1px solid var(--border); }
+  @media (max-width:560px) { .row { grid-template-columns:1fr; gap:2px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Paid plans in Satispay · page outline</h1>
+  <p class="sub">plans.html as it is now · 6 sections · 1 image, 6 placeholders · ⚠ = to check</p>
+
+  <section>
+    <h2><span class="n">00</span>Intro<span class="imgs">1 image</span></h2>
+    <div class="row"><b>Why launching plans?</b><p>Revenue tied to transactions and seasons; plans as recurring revenue. Plus, then Metal and Velvet.<span class="warn">Plus "Q3 2025" (Notion: Dec 2025) · Velvet €39.99 (Notion: €45.99)</span></p></div>
+    <div class="row"><b>Key numbers</b><p>+43% paywall conversion · 10% new subscribers with a plan · 3.2% peak CR<span class="warn">Don't match the body (over 30% · 3% · ~30%)</span></p></div>
+    <div class="row"><b>My role</b><p>Sole product designer of Growth, every plan experience end to end.</p></div>
+  </section>
+
+  <section>
+    <h2><span class="n">01</span>The challenges<span class="imgs">1 placeholder</span></h2>
+    <div class="row"><b>Paying for what was free</b><p>Value must show in the first seconds.</p></div>
+    <div class="row"><b>Not touching payments</b><p>Discovery lives around the payment flow, never inside it.</p></div>
+    <div class="row"><b>Too much to explain</b><p>Up to 15 benefits, three tiers.</p></div>
+    <div class="row"><b>Benefits that depend on the user</b><p>Account status can change what a plan includes.</p></div>
+    <div class="row"><b>Rules from day one</b><p>14-day withdrawal, refunds, renewals, early-exit costs, EU law.</p></div>
+  </section>
+
+  <section>
+    <h2><span class="n">02</span>User testing<span class="imgs">1 placeholder</span></h2>
+    <div class="row"><b>The test</b><p>700+ users, most/least important out of 5, eight rounds, 11 categories.</p></div>
+    <div class="row"><b>Clusters</b><p>Hero: streaming 32%, cinema 21% · Second: news, AI · Situational: food, mobility · Bottom: VPN</p></div>
+    <div class="row"><b>What it changed</b><p>3–5 strong benefits per plan, grouped by category; full list one tap away.</p></div>
+  </section>
+
+  <section>
+    <h2><span class="n">03</span>User lifecycle<span class="imgs">1 placeholder</span></h2>
+    <div class="row"><b>Upgrade</b><p>Immediate, refund in activity list, fewer taps.</p></div>
+    <div class="row"><b>Downgrade</b><p>Deferred after 14 days; always ends on a recap.</p></div>
+    <div class="row"><b>Unsubscription</b><p>What you'll lose → survey → recap with refunds and costs.</p></div>
+    <div class="row"><b>Renewal</b><p>Benefits stay active during payment retries.</p></div>
+  </section>
+
+  <section>
+    <h2><span class="n">04</span>Impact<span class="imgs">3 placeholders</span></h2>
+    <div class="row"><b>Headline</b><p>~2,000 → 25,000 subscribers · ~€900k ARR</p></div>
+    <div class="row"><b>Paywall</b><p>Layout over message; two-step +30%; peak 3.2%.</p></div>
+    <div class="row"><b>Upsells</b><p>1,900 subscribers in month one; Points page, top-up.</p></div>
+    <div class="row"><b>Retention</b><p>Churn 10% → 6%; bank fallback, free trials, plan identity.</p></div>
+  </section>
+
+  <section>
+    <h2><span class="n">05</span>Reflections<span class="imgs">no images</span></h2>
+    <div class="row"><b>Went well</b><p>Plans part of the product (~30% of new users) · clarity on the hard parts.</p></div>
+    <div class="row"><b>Earlier, with proposals</b><p>Willingness to pay · first-week onboarding · renewal failures · plans at sign-up · test sizing.</p></div>
+  </section>
+
+  <div class="notes">
+    <h2>To check</h2>
+    <ul>
+      <li>Intro stats: 10% new subscribers with a plan vs ~30% in Reflections. +43% vs over 30% (overall vs one test: say which).</li>
+      <li>Confirm Plus launch quarter and Velvet price.</li>
+      <li>Pick the opening numbers: conversion, or 25k subscribers and €900k ARR.</li>
+      <li>Lounge, Fast Track and partner perks were dropped from the body. No "What's next" section yet.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

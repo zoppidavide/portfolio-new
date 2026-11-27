@@ -13,6 +13,7 @@
 
     var imageSelector = [
         '.project-image-wrapper',
+        '.proto-frame',
         '.simple-image-wrapper',
         '.fluid-image-wrapper',
         '.video-wrapper',

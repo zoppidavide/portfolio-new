@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;600;700&family=IBM+Plex+Mono:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="top-fade"></div>
@@ -42,46 +42,52 @@
             <div class="detail-right">
                 <h2 id="summary" class="detail-title">Disruptive: The challenge of rebuilding</h2>
                 <figure class="detail-media">
-                    <div class="project-image-wrapper">
-                        <img class="project-image" src="./images/Disruptive_thumbnail.png" alt="Disruptive: The challenge of rebuilding" />
+                    <div class="fluid-image-wrapper media-surface">
+                        <img class="fluid-image" src="./images/Disruptive_thumbnail.png" alt="Disruptive: The challenge of rebuilding" />
                     </div>
                     <p class="project-disclaimer">The challenge of rebuilding: a digital first exhibition</p>
                 </figure>
                 <p class="detail-body" style="margin-bottom: 2px;">"The challenge of rebuilding" is a design-centered digital first exhibition born in 2020 from a group of university students, while facing the uncertainties of a generation looking ahead.</p>
                 <p class="detail-body">Team: Federico Pozzi, Marco Pari, Andrea Silvano, Giovanni Clericetti, Alice Bocchio, Michele Bruno</p>
+                <div class="detail-body detail-actions">
+                    <a href="https://disruptive.meetingrimini.org/en/" class="action-btn site-btn" target="_blank" rel="noopener noreferrer">
+                        <span>Visit the website</span>
+                        <img src="./images/arrow-up-right-20.svg" class="btn-icon" alt="" />
+                    </a>
+                </div>
                 <h3 id="1" class="detail-subtitle">Rethinking digital exhibitions</h3>
                 <p class="detail-body">Visual, experience and experiential design seamlessly blend with storytelling giving birth to an engaging and fascinating 360º experience. Thanks to original content, such as illustrations, video-interviews and other digital content, Disruptive is a completely new way of exploring and approaching the great rebuilding challenge that awaits.</p>
                 <figure class="detail-media">
-                    <div class="simple-image-wrapper">
-                        <img class="simple-image" src="./images/disruptive_2.png" alt="website preview" />
+                    <div class="fluid-image-wrapper media-surface">
+                        <img class="fluid-image" src="./images/disruptive_2.png" alt="Preview of the exhibition website on two phones" />
                     </div>
-                    <p class="project-disclaimer">Preview of the exhibition website</p>
+                    <p class="project-disclaimer">Preview of the <a href="https://disruptive.meetingrimini.org/en/" target="_blank" rel="noopener noreferrer">exhibition website</a></p>
                 </figure>
 
                 <!-- image wireframe -->
                 <figure class="detail-media">
-                    <div class="fluid-image-wrapper">
+                    <div class="fluid-image-wrapper media-surface">
                         <img class="fluid-image" src="./images/disruptive-3.png" alt="digital exhibition architecture" />
                     </div>
                     <p class="project-disclaimer">Wireframed structure for the exhibition website</p>
                 </figure>
 
                 <figure class="detail-media">
-                    <div class="fluid-image-wrapper">
+                    <div class="fluid-image-wrapper media-surface is-photo">
                         <img class="fluid-image" src="./images/disruptive_4.png" alt="Website chapter slide: Industrial death, illustrating Fiat's 2004 financial crisis" />
                     </div>
                     <p class="project-disclaimer">Website chapter slide: Industrial death, illustrating Fiat's 2004 financial crisis</p>
                 </figure>
 
                 <figure class="detail-media">
-                    <div class="fluid-image-wrapper">
+                    <div class="fluid-image-wrapper media-surface">
                         <img class="fluid-image" src="./images/disruptive-6.png" alt="Visual language for the digital exhibition" />
                     </div>
                     <p class="project-disclaimer">Visual language for the digital exhibition</p>
                 </figure>
 
                 <figure class="detail-media">
-                    <div class="fluid-image-wrapper">
+                    <div class="fluid-image-wrapper media-surface">
                         <img class="fluid-image" src="./images/disruptive_5.png" alt="Mobile view of the website's storytelling chapters, featuring a Sergio Marchionne portrait and quote" />
                     </div>
                     <p class="project-disclaimer">Illustration language and usage within the exhibition</p>
@@ -98,14 +104,14 @@
                 </figure>
 
                 <figure class="detail-media">
-                    <div class="fluid-image-wrapper">
+                    <div class="fluid-image-wrapper media-surface is-photo">
                         <img class="fluid-image" src="./images/disruptive_6.png" alt="Physical exhibition" />
                     </div>
                     <p class="project-disclaimer">The physical exhibition</p>
                 </figure>
 
                 <figure class="detail-media">
-                    <div class="fluid-image-wrapper">
+                    <div class="fluid-image-wrapper media-surface is-photo">
                         <img class="fluid-image" src="./images/disruptive_7.png" alt="Physical exhibition" />
                     </div>
                     <p class="project-disclaimer">Shots from the live exhibition in RiminiFiera</p>
@@ -145,6 +151,7 @@
         updateActiveNav();
     </script>
     <script src="reveal.js"></script>
+    <script src="count-up.js"></script>
     <script src="parallax.js"></script>
 </body>
 </html>
